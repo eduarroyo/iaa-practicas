@@ -11,7 +11,7 @@
 Para la realización de la tarea he tomado la decisión de editar manualmente los archivos utilizando Visual Studio Code y guardarlos con la extensión \code{.arff}. El paso a csv utilizando excel que se ha sugerido en clase supone varios cambios de formato en los que pueden aparecer diversos problemas como conflictos entre el separador de columnas CSV y el separador de decimales o miles, problemas con el carácter de salto de línea, codificación, etc.
 
 Para conocer los identificadores y tipos de los atributos de cada base de datos he consultado el archivo \code{.names} del directorio de descarga de cada base de datos, que contiene el listado de campos con su nombre, su tipo y sus posibles valores, si procede. He consultado la especificación del formato \code{.arff} en la \href{https://www.cs.waikato.ac.nz/ml/weka/arff.html}{página correspondiente del manual de weka}. Como puede comprobarse en la figura \ref{fig:ejemplo-arff}, un archivo \code{.arff} consta de tres secciones:
-\begin{figure}[H]
+\begin{figure}[ht]
     \centering
     \includegraphics[scale=0.65]{ejemplo-archivo-arff}
     \caption{Ejemplo de archivo \code{.arff}}
@@ -91,13 +91,13 @@ Tras aplicar el tratamiento mencionado en el apartado \ref{ssc:consideraciones-g
 \item Los atributos son numéricos continuos.
 \item La clase toma valores 1, 2 o 3 con frecuencias 59, 71 y 48 respectivamente. Es un dato nominal
 \end{enumerate}
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[scale=0.70]{wine-arff}
     \caption{Captura del archivo \code{wine.arff}.}
     \label{fig:wine-arff}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[scale=0.50]{wine-weka}
     \caption{Archivo \code{wine.arff} cargado en Weka.}
@@ -128,6 +128,91 @@ Tras aplicar el tratamiento mencionado en el apartado \ref{ssc:consideraciones-g
     }}
 \end{center}
 
+\subsubsection{filters/unsupervised/instance/Resample}
+Este filtro es no-supervisado y se aplica por patrones. Según la información que proporciona Weka, produce un remuestreo(subset) de la base de datos utilizando muestreo con o sin reemplazamiento. Este remuestreo podría utilizarse para balancear la muestra si fuera supervisado, pero como no lo es, se limita a aumentar o disminuir el número de patrones mediante la creación de duplicados o la eliminación, respectivamente.
+
+El remuestreo puede realizarse para aumentar o disminuir el tamaño de la base de datos. Cuando se utiliza para aumentarlo, se le llama \textbf{oversampling} y cuando se utiliza para disminuirlo, \textbf{undersampling}. En el caso del filtro Resample no supervisado de Weka, parece que no tiene efecto cuando se realiza un oversampling (especificando sampleSizePercent>100).
+
+En Weka se ha procedido a cargar la base de datos \code{dermatology.arff} y se ha seleccionado el filtro \code{unsupervised/instance/Resample}. En la base de datos hay 366 patrones repartidos en 6 clases con las frecuencias que se pueden ver en la tabla \ref{tab:unsupervised-resample-oversample-dist}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.40]{unsupervised-resample}
+    \caption{Configuración del filtro \code{unsupervised/Resmaple}.}
+    \label{fig:unsupervised-resample}
+\end{figure}
+
+El filtro Resample no supervisado (fig. \ref{fig:unsupervised-resample}) tiene los siguientes parámetros:
+\begin{itemize}
+    \item \code{invertSelection False/True}: Invierte la selección (descartados por seleccionados).
+    \item \code{noReplacement True/False}: Deshabilita el reemplazo de instancias, esto es, al seleccionar instancias para duplicar, permite o no que la misma instancia sea seleccionada más de una vez. Esto sólo tiene sentido al hacer oversampling (sampleSizePercent>100).
+    \item \code{randomSeed (núm 1)}: Semilla para la selección aleatoria.
+    \item \code{sampleSizePercent (núm 100)}: Tamaño del conjunto resultante como \% del original.
+\end{itemize}
+
+En la tabla \ref{tab:unsupervised-resample-undersample-dist} se muestra la distribución de las clases al utilizar el filtro para realizar \textbf{undersampling} reduciendo el conjunto al 75\%, al 50\% y al 25\%.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|r|rr|rr|rr|rr|}
+        \hline
+        \multicolumn{1}{|l|}{Clase} & \multicolumn{2}{r|}{Frec. Orig.} & \multicolumn{2}{r|}{Frec. US75} & \multicolumn{2}{r|}{Frec. US50} & \multicolumn{2}{r|}{Frec. US25} \\ 
+        \hline
+        1 & 112 & 30,60 \% & 87 & 31,75 \% & 62 & 33,88 \% & 31 & 34,07 \% \\
+        2 & 61  & 16,67 \% & 43 & 15,69 \% & 25 & 13,66 \% & 13 & 14,29 \% \\
+        3 & 72  & 19,67 \% & 54 & 19,71 \% & 37 & 20,22 \% & 16 & 17,58 \% \\
+        4 & 49  & 13,39 \% & 37 & 13,50 \% & 24 & 13,11 \% & 12 & 13,19 \% \\
+        5 & 52  & 14,21 \% & 39 & 14,23 \% & 27 & 14,75 \% & 16 & 17,58 \% \\
+        6 & 20  & 5,46 \%  & 14 & 5,11 \%  & 8  & 4,37 \%  & 3  & 3,30 \%  \\
+        \hline 
+        Total\footnote{Porcentajes respecto al tamaño muestral inicial} & 366 & 100\% & 274 & 74,86\% & 183 & 50,00\% & 91 & 24,86\% \\
+        \hline
+    \end{tabular}
+    \caption{Frecuencias de clases con diferentes underamplings}
+    \label{tab:unsupervised-resample-undersample-dist}
+\end{table}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.50]{unsupervised-resample-undersample-dist}
+    \caption{Frecuencias de clases con diferentes underamplings}
+    \label{fig:unsupervised-resample-undersample-dist}
+\end{figure}
+
+Más adelante se probará el filtro supervisado equivalente para comparar las frecuencias obtenidas. Sería lógico suponer que en el filtro supervisado, las frecuencias relativas de las clases variarán menos que en el supervisado según se va reduciendo la muestra.
+
+Al realizar \textbf{oversampling} con este mismo filtro se ha observado que sólo tiene efecto cuando el parámetro \code{noReplacement} se pone a valor \code{True}. En la tabla \ref{tab:unsupervised-resample-oversample-dist} se pueden ver las frecuencias de las diferentes clases al realizar oversamplings al 125\%, 150\%, 175\% y 200\%.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|r|rr|rr|rr|rr|rr|}
+        \hline
+        \multicolumn{1}{|c|}{Clase} & \multicolumn{2}{c|}{Frec. Orig.} & \multicolumn{2}{c|}{Frec. OS125} & \multicolumn{2}{c|}{Frec. OS150} & \multicolumn{2}{c|}{Frec. OS175} & \multicolumn{2}{c|}{Frec. OS200} \\ 
+        \hline
+        1 & 112 & 30,60 \% & 136 & 29,76 \% & 168 & 30,60 \% & 190 & 29,69 \% & 216 & 29,51 \% \\
+        2 & 61  & 16,67 \% & 66  & 14,44 \% & 83  & 15,12 \% & 100 & 15,63 \% & 114 & 15,57 \% \\
+        3 & 72  & 19,67 \% & 89  & 19,47 \% & 107 & 19,49 \% & 127 & 19,84 \% & 149 & 20,36 \% \\
+        4 & 49  & 13,39 \% & 58  & 12,69 \% & 68  & 12,39 \% & 80  & 12,50 \% & 88  & 12,02 \% \\
+        5 & 52  & 14,21 \% & 79  & 17,29 \% & 91  & 16,58 \% & 104 & 16,25 \% & 118 & 16,12 \% \\
+        6 & 20  & 5,46 \%  & 29  & 6,35 \%  & 32  & 5,83 \%  & 39  & 6,09 \%  & 47  & 6,42 \%  \\
+        \hline
+        Total\footnote{Porcentajes respecto al tamaño muestral inicial} & 366 & 100,00 \% & 457 & 124,86 \% & 549          & 150,00 \% & 640 & 174,86 \% & 732 & 200,00 \% \\
+        \hline
+    \end{tabular}
+    \caption{Frecuencias de clases con diferentes oversamplings}
+    \label{tab:unsupervised-resample-oversample-dist}
+\end{table}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.50]{unsupervised-resample-oversample-dist}
+    \caption{Frecuencias de clases con diferentes oversamplings}
+    \label{fig:unsupervised-resample-oversample-dist}
+\end{figure}
+
+Al comparar la frecuencia de cada clase tras las distintas aplicaciones del filtro (fig. \ref{fig:unsupervised-resample-undersample-dist} y \ref{fig:unsupervised-resample-oversample-dist}), se puede observar que varían para los distintos valores de \code{sampleSizePercent}, aunque no demasiado. Dado que se trata de un filtro no supervisado, (no tiene en cuenta la clase a la hora de eliminar o crear patrones) este hecho puede deberse a que la base de datos es bastante homogénea en el sentido de que los patrones de cada clase se encuentran distribuidos regularmente a lo largo de la base de datos.
+
+\subsubsection{filters/unsupervised/attributes/NominalToBinary}
+
+\subsubsection{filters/unsupervised/attributes/RemoveUseless}
+
 %-------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------
@@ -150,3 +235,7 @@ Tras aplicar el tratamiento mencionado en el apartado \ref{ssc:consideraciones-g
     \end{itemize}
     }}
 \end{center}
+
+
+\subsubsection{filters/supervised/instance/Resample}
+asdfasdfadsf
