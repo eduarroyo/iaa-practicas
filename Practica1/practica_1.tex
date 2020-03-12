@@ -218,6 +218,25 @@ Al comparar la frecuencia de cada clase tras las distintas aplicaciones del filt
 En el apartado \ref{ssc:supervised-resample} se probará el filtro supervisado equivalente para comparar las frecuencias obtenidas. Sería lógico suponer que en el filtro supervisado, las frecuencias relativas de las clases variarán menos que en el supervisado según se va reduciendo la muestra.
 
 \subsubsection{filters/unsupervised/attributes/NominalToBinary}
+El filtro no supervisado NominalToBinary reemplaza cada atributo nominal que tenga más de dos valores distintos, por tantos atributos binarios como valores diferentes tenga el atributo original. Estos atributos binarios tendrán valor 1 si el patrón tenía el valor correspondiente al atributo binario en el atributo original y 0 si no. Este proceso se denomina binarización.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.36]{unsupervised-nominal-to-binary}
+    \caption{Configuración del filtro \code{unsupervised/NominalToBinary}.}
+    \label{fig:unsupervised-nominal-to-binary}
+\end{figure}
+
+El filtro Resample, cuyo formulario de configuración puede verse en la figura \ref{fig:unsupervised-nominal-to-binary} cuenta con los siguientes parámetros:
+
+\begin{itemize}
+    \item \code{attributeIndices ([first-last])}: indica el rango de atributos que se van a binarizar. Se especifican los índices o rangos de índices separados por comas. También son válidos los valores ``first'' y ``last''.
+    \item \code{binaryAttributesNominal False/True}: Permite establecer si los valores de los nuevos atributos binarios serán valores numéricos 0-1 o si serán textuales f-t.
+    \item \code{invertSelection False/True}: Si es False, se binarizan los atributos indicados en attributeIndices. Si es True, se binarizan sólo los que no están especificados en dicho parámetro.
+    \item \code{transformAllValues False/True}: Si es True, se procesan tamibén los atributos nominales con sólo dos valores.
+\end{itemize}
+
+Para ilustrar el funcionamiento de este filtro se ha cargado en Weka la base de datos \code{breast-cancer.arff}.
 
 \subsubsection{filters/unsupervised/attributes/RemoveUseless}
 
@@ -257,7 +276,7 @@ Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecue
     \caption{Configuración del filtro \code{supervised/Resmaple}.}
     \label{fig:supervised-resample}
 \end{figure}
-El filtro Resample no supervisado cuenta con los siguientes parámetros:
+El filtro Resample supervisado cuenta con los siguientes parámetros:
 
 \begin{itemize}
     \item \code{biasToUniformClass (núm [0.0-1.0])}: Establece el tipo de sesgo del remuestreo: para 0 se mantiene distribución original de la clase, para 1, la distribución es uniforme.
