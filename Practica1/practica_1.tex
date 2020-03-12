@@ -231,12 +231,44 @@ El filtro Resample, cuyo formulario de configuración puede verse en la figura \
 
 \begin{itemize}
     \item \code{attributeIndices ([first-last])}: indica el rango de atributos que se van a binarizar. Se especifican los índices o rangos de índices separados por comas. También son válidos los valores ``first'' y ``last''.
-    \item \code{binaryAttributesNominal False/True}: Permite establecer si los valores de los nuevos atributos binarios serán valores numéricos 0-1 o si serán textuales f-t.
+    \item \code{binaryAttributesNominal False/True}: Permite establecer si los valores de los nuevos atributos binarios serán valores de tipo 0-1 o si o nominal f-t.
     \item \code{invertSelection False/True}: Si es False, se binarizan los atributos indicados en attributeIndices. Si es True, se binarizan sólo los que no están especificados en dicho parámetro.
     \item \code{transformAllValues False/True}: Si es True, se procesan tamibén los atributos nominales con sólo dos valores.
 \end{itemize}
 
-Para ilustrar el funcionamiento de este filtro se ha cargado en Weka la base de datos \code{breast-cancer.arff}.
+Para ilustrar el funcionamiento de este filtro se ha cargado en Weka la base de datos \code{breast-cancer.arff} y se ha aplicado el filtro a los campos 3 y 6. El primero es nominal con tres valores y el segundo es nominal con dos valores (fig. \ref{fig:breast-cancer-attribute-menopause} y \ref{fig:breast-cancer-attribute-node-caps}). La configuración del filtro es \code{attributeIndices=3,6}, \code{binaryAttributesNominal=True}, \code{invertSelection=False} y \code{transformAllValues=False}, por lo tanto se espera que reemplace el atributo \code{menopause} por tres atributos, uno por cada uno de los tres valores que toma, y que el atributo \code{code\_caps} se quede intacto ya que salvo que se ponga \code{transformAllValues=True} o \code{binaryAttributesNominal=False}, este filtro no altera los atributos nominales de dos valores.
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.55]{breast-cancer-attribute-menopause}
+        \caption{Información del atributo \code{menopause}}
+        \label{fig:breast-cancer-attribute-menopause}
+    \end{minipage}\hfill
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.52]{breast-cancer-attribute-node-caps}
+        \caption{Información del atributo \code{node\_caps}}
+        \label{fig:breast-cancer-attribute-node-caps}
+    \end{minipage}
+\end{figure}
+
+Los resultados obtenidos (fig. \ref{fig:breast-cancer-nominal-to-binary-1}) confirman la hipótesis:
+\begin{itemize}
+    \item El filtro ha reemplazado el atributo \code{menopause} por tres campos binarios, uno por cada valor diferente que tomaba el atributo original: \code{menopause=lt40}, \code{menopause=ge40} y \code{menopause=premeno}.
+    \item El filtro no ha alterado el atributo \code{node\_caps} porque sólo toma dos valores diferentes.
+    \item Las distribuciones de los nuevos campos son coherentes con la distribución del campo original, es decir: hay 7 patrones con valor 1 en \code{menopause=lt40}, hay 129 patrones con valor 1 en \code{menopause=ge40} y hay 150 patrones con valor 1 en \code{menopause=premeno}.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{breast-cancer-nominal-to-binary-1}
+    \caption{Campos tras aplicar \code{NominalToBinary}.}
+    \label{fig:breast-cancer-nominal-to-binary-1}
+\end{figure}
+
+Se ha observado que si se establece a False el parámetro \code{}, altera los atributos nominales con dos valores, reemplazando los valores nominales por 0 y 1 pero sin reemplazar el atributo. Para que reemplace el atributo como hace con los nominales de más de dos valores, debe ponerse a True el parámetro \code{transformAllValues}.
 
 \subsubsection{filters/unsupervised/attributes/RemoveUseless}
 
