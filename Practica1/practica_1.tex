@@ -129,20 +129,20 @@ Tras aplicar el tratamiento mencionado en el apartado \ref{ssc:consideraciones-g
 \end{center}
 
 \subsubsection{filters/unsupervised/instance/Resample}
-Este filtro es no-supervisado y se aplica por patrones. Según la información que proporciona Weka, produce un remuestreo(subset) de la base de datos utilizando muestreo con o sin reemplazamiento. Este remuestreo podría utilizarse para balancear la muestra si fuera supervisado, pero como no lo es, se limita a aumentar o disminuir el número de patrones mediante la creación de duplicados o la eliminación, respectivamente.
+\label{ssc:unsupervised-resample}
+Según la información que proporciona Weka, este filtro produce un conjunto de datos mediante un remuestreo de la base de datos original. Este remuestreo no supervisado se utiliza para aumentar el número de patrones (\textbf{oversampling}) mediante la creación de duplicados de patrones existentes o para reducirlo (\textbf{undersampling}) mediante la eliminación de patrones aleatorios. La selección de patrones para oversampling se puede hacer con o sin repetición. Si es sin repetición, un patrón duplicado no podrá ser seleccionado de nuevo para su duplicación.
 
-El remuestreo puede realizarse para aumentar o disminuir el tamaño de la base de datos. Cuando se utiliza para aumentarlo, se le llama \textbf{oversampling} y cuando se utiliza para disminuirlo, \textbf{undersampling}. En el caso del filtro Resample no supervisado de Weka, parece que no tiene efecto cuando se realiza un oversampling (especificando sampleSizePercent>100).
-
-En Weka se ha procedido a cargar la base de datos \code{dermatology.arff} y se ha seleccionado el filtro \code{unsupervised/instance/Resample}. En la base de datos hay 366 patrones repartidos en 6 clases con las frecuencias que se pueden ver en la tabla \ref{tab:unsupervised-resample-oversample-dist}.
+Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecuencias relativas en las clases tras realizar diversos undersamplings y oversamplings. La hipótesis es que las frecuencias relativas no se mantendrán constantes ya que el filtro elimina o duplica patrones al azar.En Weka, se ha cargado la base de datos \code{dermatology.arff}. En la base de datos hay inicialmente 366 patrones repartidos en 6 clases con las frecuencias que se pueden ver en la columna ``Frec. Orig.'' de la tabla \ref{tab:unsupervised-resample-oversample-dist}. Posteriormente, se ha seleccionado el filtro Resample no supervisado: \code{unsupervised/instance/Resample}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.40]{unsupervised-resample}
+    \includegraphics[scale=0.42]{unsupervised-resample}
     \caption{Configuración del filtro \code{unsupervised/Resmaple}.}
     \label{fig:unsupervised-resample}
 \end{figure}
 
-El filtro Resample no supervisado (fig. \ref{fig:unsupervised-resample}) tiene los siguientes parámetros:
+El filtro Resample no supervisado cuenta con los siguientes parámetros:
+
 \begin{itemize}
     \item \code{invertSelection False/True}: Invierte la selección (descartados por seleccionados).
     \item \code{noReplacement True/False}: Deshabilita el reemplazo de instancias, esto es, al seleccionar instancias para duplicar, permite o no que la misma instancia sea seleccionada más de una vez. Esto sólo tiene sentido al hacer oversampling (sampleSizePercent>100).
@@ -150,7 +150,15 @@ El filtro Resample no supervisado (fig. \ref{fig:unsupervised-resample}) tiene l
     \item \code{sampleSizePercent (núm 100)}: Tamaño del conjunto resultante como \% del original.
 \end{itemize}
 
-En la tabla \ref{tab:unsupervised-resample-undersample-dist} se muestra la distribución de las clases al utilizar el filtro para realizar \textbf{undersampling} reduciendo el conjunto al 75\%, al 50\% y al 25\%.
+Para este ejercicio se han establecido los siguientes valores de configuración:
+\begin {itemize}
+    \item \code{randomSeed=50}
+    \item \code{noReplacement=True}
+    \item \code{invertSelection=True}
+    \item \code{sampleSizePercent=\{75, 50, 25\}}.
+\end{itemize}
+
+En la tabla \ref{tab:unsupervised-resample-undersample-dist} se muestra la distribución de las clases al utilizar el filtro para realizar \textbf{undersampling} reduciendo el conjunto al 75\%, al 50\% y al 25\%. Cada resample se ha realizado sobre el conjunto original. El proceso ha sido: aplicar el filtro, tomar los datos, deshacer, siguiente.
 \begin{table}[ht]
     \centering
     \begin{tabular}{|r|rr|rr|rr|rr|}
@@ -164,22 +172,20 @@ En la tabla \ref{tab:unsupervised-resample-undersample-dist} se muestra la distr
         5 & 52  & 14,21 \% & 39 & 14,23 \% & 27 & 14,75 \% & 16 & 17,58 \% \\
         6 & 20  & 5,46 \%  & 14 & 5,11 \%  & 8  & 4,37 \%  & 3  & 3,30 \%  \\
         \hline 
-        Total\footnote{Porcentajes respecto al tamaño muestral inicial} & 366 & 100\% & 274 & 74,86\% & 183 & 50,00\% & 91 & 24,86\% \\
+        Total\footnote{Porcentajes respecto al tamaño número inicial de patrones} & 366 & 100\% & 274 & 74,86\% & 183 & 50,00\% & 91 & 24,86\% \\
         \hline
     \end{tabular}
-    \caption{Frecuencias de clases con diferentes underamplings}
+    \caption{Frecuencias de clases con diferentes undersamplings}
     \label{tab:unsupervised-resample-undersample-dist}
 \end{table}
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.50]{unsupervised-resample-undersample-dist}
-    \caption{Frecuencias de clases con diferentes underamplings}
+    \includegraphics[scale=0.59]{unsupervised-resample-undersample-dist}
+    \caption{Frecuencias de clases con diferentes undersamplings}
     \label{fig:unsupervised-resample-undersample-dist}
 \end{figure}
 
-Más adelante se probará el filtro supervisado equivalente para comparar las frecuencias obtenidas. Sería lógico suponer que en el filtro supervisado, las frecuencias relativas de las clases variarán menos que en el supervisado según se va reduciendo la muestra.
-
-Al realizar \textbf{oversampling} con este mismo filtro se ha observado que sólo tiene efecto cuando el parámetro \code{noReplacement} se pone a valor \code{True}. En la tabla \ref{tab:unsupervised-resample-oversample-dist} se pueden ver las frecuencias de las diferentes clases al realizar oversamplings al 125\%, 150\%, 175\% y 200\%.
+Siguiendo la misma dinámica que con el undersampling, se ha realizado un oversampling del conjunto original utilizando el filtro Resample no supervisado, observado que sólo tiene efecto cuando el parámetro \code{noReplacement} se pone a valor \code{False}. En la tabla \ref{tab:unsupervised-resample-oversample-dist} se pueden ver las frecuencias de las diferentes clases al realizar oversamplings al 125\%, 150\%, 175\% y 200\%.
 
 \begin{table}[ht]
     \centering
@@ -202,12 +208,14 @@ Al realizar \textbf{oversampling} con este mismo filtro se ha observado que sól
 \end{table}
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.50]{unsupervised-resample-oversample-dist}
+    \includegraphics[scale=0.60]{unsupervised-resample-oversample-dist}
     \caption{Frecuencias de clases con diferentes oversamplings}
     \label{fig:unsupervised-resample-oversample-dist}
 \end{figure}
 
-Al comparar la frecuencia de cada clase tras las distintas aplicaciones del filtro (fig. \ref{fig:unsupervised-resample-undersample-dist} y \ref{fig:unsupervised-resample-oversample-dist}), se puede observar que varían para los distintos valores de \code{sampleSizePercent}, aunque no demasiado. Dado que se trata de un filtro no supervisado, (no tiene en cuenta la clase a la hora de eliminar o crear patrones) este hecho puede deberse a que la base de datos es bastante homogénea en el sentido de que los patrones de cada clase se encuentran distribuidos regularmente a lo largo de la base de datos.
+Al comparar la frecuencia de cada clase tras las distintas aplicaciones del filtro (fig. \ref{fig:unsupervised-resample-undersample-dist} y \ref{fig:unsupervised-resample-oversample-dist}), se puede observar que varían para los distintos valores de \code{sampleSizePercent}, aunque no demasiado. Dado que se trata de un filtro no supervisado (no tiene en cuenta la clase a la hora de eliminar o crear patrones), este hecho puede deberse a que la base de datos es bastante homogénea en el sentido de que los patrones de cada clase se encuentran distribuidos regularmente a lo largo de la base de datos. En casos de undersampling extremo (ej.: reducción al 4\%) se observa cómo llegan a desaparecer todos los patrones de algunas clases.
+
+En el apartado \ref{ssc:supervised-resample} se probará el filtro supervisado equivalente para comparar las frecuencias obtenidas. Sería lógico suponer que en el filtro supervisado, las frecuencias relativas de las clases variarán menos que en el supervisado según se va reduciendo la muestra.
 
 \subsubsection{filters/unsupervised/attributes/NominalToBinary}
 
@@ -238,4 +246,4 @@ Al comparar la frecuencia de cada clase tras las distintas aplicaciones del filt
 
 
 \subsubsection{filters/supervised/instance/Resample}
-asdfasdfadsf
+\label{ssc:supervised-resample}
