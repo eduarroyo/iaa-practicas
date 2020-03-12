@@ -132,7 +132,7 @@ Tras aplicar el tratamiento mencionado en el apartado \ref{ssc:consideraciones-g
 \label{ssc:unsupervised-resample}
 Según la información que proporciona Weka, este filtro produce un conjunto de datos mediante un remuestreo de la base de datos original. Este remuestreo no supervisado se utiliza para aumentar el número de patrones (\textbf{oversampling}) mediante la creación de duplicados de patrones existentes o para reducirlo (\textbf{undersampling}) mediante la eliminación de patrones aleatorios. La selección de patrones para oversampling se puede hacer con o sin repetición. Si es sin repetición, un patrón duplicado no podrá ser seleccionado de nuevo para su duplicación.
 
-Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecuencias relativas en las clases tras realizar diversos undersamplings y oversamplings. La hipótesis es que las frecuencias relativas no se mantendrán constantes ya que el filtro elimina o duplica patrones al azar.En Weka, se ha cargado la base de datos \code{dermatology.arff}. En la base de datos hay inicialmente 366 patrones repartidos en 6 clases con las frecuencias que se pueden ver en la columna ``Frec. Orig.'' de la tabla \ref{tab:unsupervised-resample-oversample-dist}. Posteriormente, se ha seleccionado el filtro Resample no supervisado: \code{unsupervised/instance/Resample}.
+Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecuencias relativas en las clases tras realizar diversos undersamplings y oversamplings. La hipótesis es que las frecuencias relativas no se mantendrán constantes ya que el filtro elimina o duplica patrones al azar. En Weka, se ha cargado la base de datos \code{dermatology.arff}. En la base de datos hay inicialmente 366 patrones repartidos en 6 clases con las frecuencias que se pueden ver en la columna ``Frec. Orig.'' de la tabla \ref{tab:unsupervised-resample-oversample-dist}. Posteriormente, se ha seleccionado el filtro Resample no supervisado: \code{unsupervised/instance/Resample}.
 
 \begin{figure}[ht]
     \centering
@@ -154,7 +154,7 @@ Para este ejercicio se han establecido los siguientes valores de configuración:
 \begin {itemize}
     \item \code{randomSeed=50}
     \item \code{noReplacement=True}
-    \item \code{invertSelection=True}
+    \item \code{invertSelection=False}
     \item \code{sampleSizePercent=\{75, 50, 25\}}.
 \end{itemize}
 
@@ -165,12 +165,12 @@ En la tabla \ref{tab:unsupervised-resample-undersample-dist} se muestra la distr
         \hline
         \multicolumn{1}{|l|}{Clase} & \multicolumn{2}{r|}{Frec. Orig.} & \multicolumn{2}{r|}{Frec. US75} & \multicolumn{2}{r|}{Frec. US50} & \multicolumn{2}{r|}{Frec. US25} \\ 
         \hline
-        1 & 112 & 30,60 \% & 87 & 31,75 \% & 62 & 33,88 \% & 31 & 34,07 \% \\
-        2 & 61  & 16,67 \% & 43 & 15,69 \% & 25 & 13,66 \% & 13 & 14,29 \% \\
-        3 & 72  & 19,67 \% & 54 & 19,71 \% & 37 & 20,22 \% & 16 & 17,58 \% \\
-        4 & 49  & 13,39 \% & 37 & 13,50 \% & 24 & 13,11 \% & 12 & 13,19 \% \\
-        5 & 52  & 14,21 \% & 39 & 14,23 \% & 27 & 14,75 \% & 16 & 17,58 \% \\
-        6 & 20  & 5,46 \%  & 14 & 5,11 \%  & 8  & 4,37 \%  & 3  & 3,30 \%  \\
+        1 & 112 & 30,60\% & 87 & 31,75\% & 62 & 33,88\% & 31 & 34,07\% \\
+        2 & 61  & 16,67\% & 43 & 15,69\% & 25 & 13,66\% & 13 & 14,29\% \\
+        3 & 72  & 19,67\% & 54 & 19,71\% & 37 & 20,22\% & 16 & 17,58\% \\
+        4 & 49  & 13,39\% & 37 & 13,50\% & 24 & 13,11\% & 12 & 13,19\% \\
+        5 & 52  & 14,21\% & 39 & 14,23\% & 27 & 14,75\% & 16 & 17,58\% \\
+        6 & 20  & 5,46\%  & 14 & 5,11\%  & 8  & 4,37\%  & 3  & 3,30\%  \\
         \hline 
         Total\footnote{Porcentajes respecto al tamaño número inicial de patrones} & 366 & 100\% & 274 & 74,86\% & 183 & 50,00\% & 91 & 24,86\% \\
         \hline
@@ -193,12 +193,12 @@ Siguiendo la misma dinámica que con el undersampling, se ha realizado un oversa
         \hline
         \multicolumn{1}{|c|}{Clase} & \multicolumn{2}{c|}{Frec. Orig.} & \multicolumn{2}{c|}{Frec. OS125} & \multicolumn{2}{c|}{Frec. OS150} & \multicolumn{2}{c|}{Frec. OS175} & \multicolumn{2}{c|}{Frec. OS200} \\ 
         \hline
-        1 & 112 & 30,60 \% & 136 & 29,76 \% & 168 & 30,60 \% & 190 & 29,69 \% & 216 & 29,51 \% \\
-        2 & 61  & 16,67 \% & 66  & 14,44 \% & 83  & 15,12 \% & 100 & 15,63 \% & 114 & 15,57 \% \\
-        3 & 72  & 19,67 \% & 89  & 19,47 \% & 107 & 19,49 \% & 127 & 19,84 \% & 149 & 20,36 \% \\
-        4 & 49  & 13,39 \% & 58  & 12,69 \% & 68  & 12,39 \% & 80  & 12,50 \% & 88  & 12,02 \% \\
-        5 & 52  & 14,21 \% & 79  & 17,29 \% & 91  & 16,58 \% & 104 & 16,25 \% & 118 & 16,12 \% \\
-        6 & 20  & 5,46 \%  & 29  & 6,35 \%  & 32  & 5,83 \%  & 39  & 6,09 \%  & 47  & 6,42 \%  \\
+        1 & 112 & 30,60\% & 136 & 29,76\% & 168 & 30,60\% & 190 & 29,69\% & 216 & 29,51\% \\
+        2 & 61  & 16,67\% & 66  & 14,44\% & 83  & 15,12\% & 100 & 15,63\% & 114 & 15,57\% \\
+        3 & 72  & 19,67\% & 89  & 19,47\% & 107 & 19,49\% & 127 & 19,84\% & 149 & 20,36\% \\
+        4 & 49  & 13,39\% & 58  & 12,69\% & 68  & 12,39\% & 80  & 12,50\% & 88  & 12,02\% \\
+        5 & 52  & 14,21\% & 79  & 17,29\% & 91  & 16,58\% & 104 & 16,25\% & 118 & 16,12\% \\
+        6 & 20  & 5,46\%  & 29  & 6,35\%  & 32  & 5,83\%  & 39  & 6,09\%  & 47  & 6,42\%  \\
         \hline
         Total\footnote{Porcentajes respecto al tamaño muestral inicial} & 366 & 100,00 \% & 457 & 124,86 \% & 549          & 150,00 \% & 640 & 174,86 \% & 732 & 200,00 \% \\
         \hline
@@ -247,3 +247,104 @@ En el apartado \ref{ssc:supervised-resample} se probará el filtro supervisado e
 
 \subsubsection{filters/supervised/instance/Resample}
 \label{ssc:supervised-resample}
+El filtro Resample supervisado produce un conjunto de datos mediante un remuestreo de la base de datos original teniendo en cuenta la clase. Este remuestreo supervisado se utiliza para aumentar el número de patrones (\textbf{oversampling}) mediante la creación de duplicados de patrones existentes o para reducirlo (\textbf{undersampling}) mediante la eliminación de patrones manteniendo ciertas proporciones entre los patrones de cada clase. La selección de patrones para oversampling se puede hacer con o sin repetición. Si es sin repetición, un patrón duplicado no podrá ser seleccionado de nuevo para su duplicación. Según la documentación, la clase debe ser de tipo nominal para poder utilizar este filtro. De lo contrario, deberemos utilizar la versión no supervisada \ref{ssc:unsupervised-resample}.
+
+Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecuencias relativas en las clases tras realizar diversos undersamplings y oversamplings en función del valor del parámetro \code{biasToUniformClass}. La hipótesis es que para el valor 0 la distribución de la clase se mantendrá igual mientras que para valor 1 se igualarán. Para valores intermedios del parámetro, mientras más cerca de 1, producirán un resultado más uniforme. En Weka, se ha cargado la base de datos \code{dermatology.arff}. En la base de datos hay inicialmente 366 patrones repartidos en 6 clases con las frecuencias que se pueden ver en la columna ``Frec. Orig.'' de la tabla \ref{tab:unsupervised-resample-oversample-dist}. Posteriormente, se ha seleccionado el filtro Resample supervisado: \code{supervised/instance/Resample}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.42]{supervised-resample}
+    \caption{Configuración del filtro \code{supervised/Resmaple}.}
+    \label{fig:supervised-resample}
+\end{figure}
+El filtro Resample no supervisado cuenta con los siguientes parámetros:
+
+\begin{itemize}
+    \item \code{biasToUniformClass (núm [0.0-1.0])}: Establece el tipo de sesgo del remuestreo: para 0 se mantiene distribución original de la clase, para 1, la distribución es uniforme.
+    \item \code{invertSelection False/True}: Invierte la selección (descartados por seleccionados).
+    \item \code{noReplacement True/False}: Deshabilita el reemplazo de instancias, esto es, al seleccionar instancias para duplicar, permite o no que la misma instancia sea seleccionada más de una vez. Esto sólo tiene sentido al hacer oversampling (sampleSizePercent>100).
+    \item \code{randomSeed (núm 1)}: Semilla para la selección aleatoria.
+    \item \code{sampleSizePercent (núm 100)}: Tamaño del conjunto resultante como \% del original.
+\end{itemize}
+
+Para este ejercicio se han establecido los siguientes valores de configuración:
+\begin {itemize}
+    \item \code{biasToUniformClass=\{0.0, 1.0\}}
+    \item \code{randomSeed=50}
+    \item \code{noReplacement=True}
+    \item \code{invertSelection=False}
+    \item \code{sampleSizePercent=\{33, 66, 150, 200\}}.
+\end{itemize}
+
+
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|r|rr|rr|
+    >{\columncolor[HTML]{C0C0C0}}r 
+    >{\columncolor[HTML]{C0C0C0}}r |rr|rr|}
+    \hline
+    \multicolumn{1}{|c|}{Clase} &
+      \multicolumn{2}{c|}{Frec. US33} &
+      \multicolumn{2}{c|}{Frec. US66} &
+      \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}Frec. Orig.} &
+      \multicolumn{2}{c|}{Frec. OS150} &
+      \multicolumn{2}{c|}{Frec. OS200} \\ \hline
+      1     & 30  & 25,00\% & 59  & 24,48\% & 112 & 30,60\%  & 142 & 25,87\%  & 196 & 26,78\% \\
+      2     & 20  & 16,67\% & 34  & 14,11\% & 61  & 16,67\%  & 92  & 16,76\%  & 122 & 16,67\% \\
+      3     & 29  & 24,17\% & 63  & 26,14\% & 72  & 19,67\%  & 120 & 21,86\%  & 153 & 20,90\% \\
+      4     & 15  & 12,50\% & 31  & 12,86\% & 49  & 13,39\%  & 78  & 14,21\%  & 97  & 13,25\% \\
+      5     & 23  & 19,17\% & 40  & 16,60\% & 52  & 14,21\%  & 87  & 15,85\%  & 122 & 16,67\% \\
+      6     & 3   & 2,50\%  & 14  & 5,81\%  & 20  & 5,46\%   & 30  & 5,46\%   & 42  & 5,74\%  \\ \hline
+      Total\footnote{Porcentajes respecto al tamaño muestral inicial} & 120 & 32,79\% & 241 & 65,85\% & 366 & 100,00\% & 549 & 150,00\% & 732 & 200,00\% \\ \hline
+    \end{tabular}
+    \caption{Frecuencias de clases con diferentes resamples y \code{biasToUniformClass=0}}
+    \label{tab:supervised-resample-bias0-dist}
+\end{table}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.60]{supervised-resample-bias0-dist}
+    \caption{Frecuencias de clases al hacer resample con \code{biasToUniformClass=0}}
+    \label{fig:supervised-resample-bias0-dist}
+\end{figure}
+
+
+
+
+
+
+\clearpage
+
+
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|r|rr|rr|
+    >{\columncolor[HTML]{C0C0C0}}r 
+    >{\columncolor[HTML]{C0C0C0}}r |rr|rr|}
+    \hline
+    \multicolumn{1}{|c|}{Clase} &
+      \multicolumn{2}{c|}{Frec. US33} &
+      \multicolumn{2}{c|}{Frec. US66} &
+      \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}Frec. Orig.} &
+      \multicolumn{2}{c|}{Frec. OS150} &
+      \multicolumn{2}{c|}{Frec. OS200} \\ \hline
+    1     & 16  & 13,33\% & 43  & 17,84\% & 112 & 30,60\%  & 93  & 16,94\%  & 122 & 16,67\%  \\
+    2     & 16  & 13,33\% & 30  & 12,45\% & 61  & 16,67\%  & 88  & 16,03\%  & 120 & 16,39\%  \\
+    3     & 26  & 21,67\% & 40  & 16,60\% & 72  & 19,67\%  & 93  & 16,94\%  & 114 & 15,57\%  \\
+    4     & 17  & 14,17\% & 36  & 14,94\% & 49  & 13,39\%  & 93  & 16,94\%  & 132 & 18,03\%  \\
+    5     & 24  & 20,00\% & 48  & 19,92\% & 52  & 14,21\%  & 97  & 17,67\%  & 123 & 16,80\%  \\
+    6     & 21  & 17,50\% & 44  & 18,26\% & 20  & 5,46\%   & 85  & 15,48\%  & 121 & 16,53\%  \\ \hline
+    Total\footnote{Porcentajes respecto al tamaño muestral inicial} & 120 & 32,79\% & 241 & 65,85\% & 366 & 100,00\% & 549 & 150,00\% & 732 & 200,00\% \\ \hline
+    \end{tabular}
+    \caption{Frecuencias de clases con diferentes resamples y \code{biasToUniformClass=1}}
+    \label{tab:supervised-resample-bias1-dist}
+\end{table}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.60]{supervised-resample-bias1-dist}
+    \caption{Frecuencias de clases al hacer resamples con \code{biasToUniformClass=1}}
+    \label{fig:supervised-resample-bias1-dist}
+\end{figure}
