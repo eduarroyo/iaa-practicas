@@ -253,7 +253,7 @@ Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecue
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.42]{supervised-resample}
+    \includegraphics[scale=0.36]{supervised-resample}
     \caption{Configuración del filtro \code{supervised/Resmaple}.}
     \label{fig:supervised-resample}
 \end{figure}
@@ -276,8 +276,7 @@ Para este ejercicio se han establecido los siguientes valores de configuración:
     \item \code{sampleSizePercent=\{33, 66, 150, 200\}}.
 \end{itemize}
 
-
-
+En la tabla \ref{tab:supervised-resample-bias0-dist} aparecen los datos de los distintos resamples realizados y se comparan las frecuencias de las clases con las originales. Estos datos se han obtenido con \code{biasToUniformClass=0} y como se puede observar en el gráfico \ref{fig:supervised-resample-bias0-dist}, las proporciones son bastante similares a las originales.
 
 \begin{table}[ht]
     \centering
@@ -304,20 +303,12 @@ Para este ejercicio se han establecido los siguientes valores de configuración:
 \end{table}
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.60]{supervised-resample-bias0-dist}
+    \includegraphics[scale=0.51]{supervised-resample-bias0-dist}
     \caption{Frecuencias de clases al hacer resample con \code{biasToUniformClass=0}}
     \label{fig:supervised-resample-bias0-dist}
 \end{figure}
 
-
-
-
-
-
-\clearpage
-
-
-
+En la tabla \ref{tab:supervised-resample-bias1-dist} aparecen los datos de los distintos resamples realizados y se comparan las frecuencias de las clases con las originales. Estos datos se han obtenido con \code{biasToUniformClass=1}. En este caso, los porcentajes de patrones de cada clase tienden a igualarse, tal como se puede ver en el gráfico \ref{fig:supervised-resample-bias1-dist}.
 
 \begin{table}[ht]
     \centering
