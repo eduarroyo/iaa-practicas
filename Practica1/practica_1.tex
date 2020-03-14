@@ -233,7 +233,7 @@ El filtro Resample, cuyo formulario de configuración puede verse en la figura \
     \item \code{attributeIndices ([first-last])}: indica el rango de atributos que se van a binarizar. Se especifican los índices o rangos de índices separados por comas. También son válidos los valores ``first'' y ``last''.
     \item \code{binaryAttributesNominal False/True}: Permite establecer si los valores de los nuevos atributos binarios serán valores de tipo 0-1 o si o nominal f-t.
     \item \code{invertSelection False/True}: Si es False, se binarizan los atributos indicados en attributeIndices. Si es True, se binarizan sólo los que no están especificados en dicho parámetro.
-    \item \code{transformAllValues False/True}: Si es True, se procesan tamibén los atributos nominales con sólo dos valores.
+    \item \code{transformAllValues False/True}: Si es True, se procesan también los atributos nominales con sólo dos valores.
 \end{itemize}
 
 Para ilustrar el funcionamiento de este filtro se ha cargado en Weka la base de datos \code{breast-cancer.arff} y se ha aplicado el filtro a los campos 3 y 6. El primero es nominal con tres valores y el segundo es nominal con dos valores (fig. \ref{fig:breast-cancer-attribute-menopause} y \ref{fig:breast-cancer-attribute-node-caps}). La configuración del filtro es \code{attributeIndices=3,6}, \code{binaryAttributesNominal=True}, \code{invertSelection=False} y \code{transformAllValues=False}, por lo tanto se espera que reemplace el atributo \code{menopause} por tres atributos, uno por cada uno de los tres valores que toma, y que el atributo \code{code\_caps} se quede intacto ya que salvo que se ponga \code{transformAllValues=True} o \code{binaryAttributesNominal=False}, este filtro no altera los atributos nominales de dos valores.
@@ -271,6 +271,17 @@ Los resultados obtenidos (fig. \ref{fig:breast-cancer-nominal-to-binary-1}) conf
 Se ha observado que si se establece a False el parámetro \code{}, altera los atributos nominales con dos valores, reemplazando los valores nominales por 0 y 1 pero sin reemplazar el atributo. Para que reemplace el atributo como hace con los nominales de más de dos valores, debe ponerse a True el parámetro \code{transformAllValues}.
 
 \subsubsection{filters/unsupervised/attributes/RemoveUseless}
+El filtro no supervisado RemoveUseless elimina los atributos de la base de datos que no varían o que lo hacen demasiado. Es decir, elimina todos los atributos con valor constante o cuya variación excede el porcentaje indicado en el parámetro \code{maximumVariancePercentageAllowed}. Para calcular la variación de un valor, se aplica la siguiente fórmula:
+\begin{equation*}
+\dfrac{Nº\ Valores\ Distintos}{Nº\ Valores\ Total\cdot100}
+\end{equation*}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{unsupervised-remove-useless}
+    \caption{Configuración del filtro \code{unsupervised/RemoveUseless}}
+    \label{fig:unsupervised-remove-useless}
+\end{figure}
 
 %-------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------
