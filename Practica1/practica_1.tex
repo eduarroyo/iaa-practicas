@@ -271,12 +271,10 @@ Los resultados obtenidos (fig. \ref{fig:breast-cancer-nominal-to-binary-1}) conf
 Se ha observado que si se establece a False el parámetro \code{}, altera los atributos nominales con dos valores, reemplazando los valores nominales por 0 y 1 pero sin reemplazar el atributo. Para que reemplace el atributo como hace con los nominales de más de dos valores, debe ponerse a True el parámetro \code{transformAllValues}.
 
 \subsubsection{filters/unsupervised/attributes/RemoveUseless}
-El filtro no supervisado RemoveUseless elimina los atributos de la base de datos que no varían o que lo hacen demasiado. Es decir, elimina todos los atributos con valor constante o cuya variación excede el porcentaje indicado en el parámetro \code{maximumVariancePercentageAllowed}. Para calcular la variación de un valor, se aplica la siguiente fórmula:
+El filtro no supervisado RemoveUseless elimina los atributos de la base de datos que no varían o que lo hacen demasiado. Es decir, elimina todos los atributos con valor constante o cuya variación excede el porcentaje indicado en el parámetro \code{maximumVariancePercentageAllowed}. Para calcular la variación de un atributo se aplica la siguiente fórmula:
 \begin{equation*}
-\dfrac{Nº\ Valores\ Distintos}{Nº\ Valores\ Total\cdot100}
+Variación=\dfrac{Nº\ Valores\ Distintos}{Nº\ Valores\ Total}\cdot100
 \end{equation*}
-
-Para probar este filtro se va a componer una base de datos de ejemplo, de manera que podamos forzar cada comportamiento del filtro. Para comprobar que el filtro elimina los atributos constantes se han
 
 \begin{figure}[ht]
     \centering
@@ -285,10 +283,74 @@ Para probar este filtro se va a componer una base de datos de ejemplo, de manera
     \label{fig:unsupervised-remove-useless}
 \end{figure}
 
-%-------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------
+Para probar este filtro se va a componer una base de datos de ejemplo con 200 patrones y 6 atributos más una clase. Los atributos tienen las siguientes características:
+\begin{enumerate}
+    \item \code{atr1} nominal binario con valores SI/NO. Todos los patrones tienen valor NO. Los datos que arroja Weka sobre este atributo se ven en la fig. \ref{fig:unsupervised-remove-useless-atr1}.
+    \item \code{atr2} nominal binario con valores SI/NO. Todos los patrones tienen valor NO excepto uno con valor SI. Este atributo se ha puesto como control del primero, para comprobar que no es eliminado por el filtro. Los datos que arroja Weka sobre este atributo se ven en la fig. \ref{fig:unsupervised-remove-useless-atr2}.    
+    \item \code{atr3} numérico. Todos los patrones tienen valor 7.0. Es el mismo caso que \code{atr1} para numérico. Se espera que el filtro elimine este campo también. Los datos que arroja Weka sobre este atributo se ven en la fig. \ref{fig:unsupervised-remove-useless-atr3}.
+    \item \code{atr4} nominal con valores \code{a1\dots a200}. Cada atributo toma un valor diferente. La tasa de variación es $\frac{200}{200}\cdot100=100$. Los datos que arroja Weka sobre este atributo se ven en la fig. \ref{fig:unsupervised-remove-useless-atr3}.
+    \item \code{atr5} nominal con valores \code{b1\dots b199}. Cada atributo toma un valor diferente salvo los dos últimos que son iguales. La tasa de variación es $\frac{199}{200}\cdot100=99,5$. Los datos que arroja Weka sobre este atributo se ven en la fig. \ref{fig:unsupervised-remove-useless-atr5}.
+    \item \code{atr6} nominal con valores \code{a1\dots a200}. Cada atributo toma un valor diferente salvo los tres últimos que son iguales. La tasa de variación es $\frac{198}{200}\cdot100=99$. Los datos que arroja Weka sobre este atributo se ven en la fig. \ref{fig:unsupervised-remove-useless-atr6}.
+\end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.4]{unsupervised-remove-useless-attr1}
+        \caption{Atributo \code{atr1}}
+        \label{fig:unsupervised-remove-useless-atr1}
+    \end{minipage}\hfill
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.4]{unsupervised-remove-useless-attr2}
+        \caption{Atributo \code{atr2}}
+        \label{fig:unsupervised-remove-useless-atr2}
+    \end{minipage}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.4]{unsupervised-remove-useless-attr3}
+        \caption{Atributo \code{atr3}}
+        \label{fig:unsupervised-remove-useless-atr3}
+    \end{minipage}\hfill
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.4]{unsupervised-remove-useless-attr4}
+        \caption{Atributo \code{atr4}}
+        \label{fig:unsupervised-remove-useless-atr4}
+    \end{minipage}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.4]{unsupervised-remove-useless-attr5}
+        \caption{Atributo \code{atr5}}
+        \label{fig:unsupervised-remove-useless-atr5}
+    \end{minipage}\hfill
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.4]{unsupervised-remove-useless-attr6}
+        \caption{Atributo \code{atr6}}
+        \label{fig:unsupervised-remove-useless-atr6}
+    \end{minipage}
+\end{figure}
+
+Se aplicará la configuración por defecto del filtro, que especifica el valor 99 para el parámetro \code{maximumVaiancePercentajeAllowed}. Se espera que el filtro elimine los atributos 1 y 3 por ser constantes y 4 y 5 por tener una tasa de variación superior al 99\% configurado en el parámetro. Como se puede comprobar en la figura \ref{fig:unsupervised-remove-useless-aplicado}, el filtro se ha comportado como se esperaba: eliminando los atributos \code{atr1}, \code{atr3}, \code{atr4} y \code{atr5} y manteniendo \code{atr2} y \code{atr6}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{unsupervised-remove-useless-aplicado}
+    \caption{Resultado de aplicar el filtro \code{RemoveUseless}.}
+    \label{fig:unsupervised-remove-useless-aplicado}
+\end{figure}
+
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
 \subsection{Actividad 2}\label{p12a2}
 \begin{center}
     \parbox{12cm}{\justify\textit{Elija 3 filtros Supervisados de los que aparecen listados, expliquelos y describa cómo quedan los datos antes y después al aplicarlos sobre una o varias bases de datos.
