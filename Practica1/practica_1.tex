@@ -379,7 +379,7 @@ Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecue
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.36]{supervised-resample}
+    \includegraphics[scale=0.5]{supervised-resample}
     \caption{Configuración del filtro \code{supervised/Resmaple}.}
     \label{fig:supervised-resample}
 \end{figure}
@@ -467,7 +467,21 @@ En la tabla \ref{tab:supervised-resample-bias1-dist} aparecen los datos de los d
 \end{figure}
 
 \subsubsection{filters/supervised/instance/ClassBalancer}
-a
+El filtro supervisado \code{ClassBalancer} asigna pesos ponderados a los patrones de manera que se equilibren las clases. Los patrones de una clase menos frecuente tendrán pesos ponderados mayores y viceversa, de manera que cada clase tenga en suma el mismo peso. En caso de que la clase fuese numérica, el filtro también la discretiza.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.45]{supervised-class-balancer}
+    \caption{Diálogo de configuración del filtro supervisado \code{ClassBalancer}}
+    \label{fig:supervised-class-balancer}
+\end{figure}
+
+Los parámetros del filtro son los que aparecen en la figura \ref{fig:supervised-class-balancer} y se describen a continuación:
+\begin{itemize}
+    \item \code{Number of discretization intervals (10)}:
+    \item \code{debug False/True}
+    \item \code{doNotCheckCapabilities (False/True)}: 
+\end{itemize}
+\clearpage
 \subsubsection{filters/supervised/instance/SpreadSubsample4}
 b
