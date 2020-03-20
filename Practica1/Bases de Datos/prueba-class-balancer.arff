@@ -1,0 +1,28 @@
+@relation prueba-class-balancer
+
+@attribute atr1 numeric
+@attribute atr2 numeric
+@attribute atr3 numeric
+@attribute class numeric
+
+@data
+8,67,63,4
+50,43,53,3
+34,71,68,4
+6,43,65,1
+88,2,24,2
+83,52,52,1
+10,86,84,2
+6,89,75,2
+75,72,9,3
+17,53,25,1
+42,70,10,5
+10,93,23,5
+2,72,98,5
+18,8,7,5
+19,33,7,5
+42,70,10,5
+10,93,23,5
+2,72,98,5
+18,8,7,5
+19,33,7,5
