@@ -1,0 +1,1 @@
+Para ser más justos, el reemplazamiento que se haga en test debe ser por los valores usados en train, así como los valores mínimos y máximos que hay que usar en la normalización, pero para la práctica y dada la situación, PODÉIS NORMALIZAR Y REEMPLAZAR USANDO LOS DATOS DE TEST (pero tened en cuenta esto para el futuro).
