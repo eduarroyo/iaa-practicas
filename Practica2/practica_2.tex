@@ -77,10 +77,25 @@ En primer lugar se eliminan los tres atributos con 100\% de datos perdidos: TIDS
     \label{fig:clasificador-logistico-resultados-01}
 \end{figure}
 
-A continuación se estudian los campos DPD, APD, PRES y DEWP que tienen respectivamente 
-Atributo DEWP: ¿Eliminar o no?
+A continuación se estudian los campos DPD, APD, PRES y DEWP que tienen respectivamente 8 (<1\%), 8 (<1\%), 553 (16\%) y 1189 (33\%) patrones con datos perdidos.
 
-Reemplazamiento de datos perdidos en DPD, APD, PRES y DEWP (si no se elimina).
+El atributo con más datos perdidos es DEWP. El siguiente paso será ver cómo afecta a los resultados la eliminación de este atributo y decidir si la información que aporta justifica que se mantenga. Tras realizar la prueba correspondiente (fig. \ref{fig:clasificador-logistico-resultados-02}), se observa que los patrones correctamente clasificados bajan muy levemente (sólo 7 patrones correctamente clasificados menos, de un total de 2886), por lo que probablemente la mejor decisión sea eliminar el atributo, ya que obviarlo apenas afecta a los resultados.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.7]{clasificador-logistico-resultados-02}
+    \caption{Resultados tras eliminar DEWP.}
+    \label{fig:clasificador-logistico-resultados-02}
+\end{figure}
+
+El siguiente paso ha sido reemplazar los datos perdidos de los atributos DPD, APD y PRES utilizando el filtro ReplaceMissingValues tanto en el conjunto de entrenamiento como el de prueba. Como se puede observar en la figura \ref{fig:clasificador-logistico-resultados-03}, los resultados no han mejorado respecto al paso anterior.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.7]{clasificador-logistico-resultados-03}
+    \caption{Resultados tras reemplazar datos perdidos de DPD, APD y PRES.}
+    \label{fig:clasificador-logistico-resultados-03}
+\end{figure}
 
 \subsection{Unificación de medidas}
 Convertir ºC a ºK
