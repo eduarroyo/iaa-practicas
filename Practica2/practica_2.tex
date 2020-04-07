@@ -30,11 +30,11 @@ En este ejercicio se van a poner en práctica los conceptos aprendidos sobre pre
 \end{itemize}
 La variable de salida indica la altura de ola en las seis horas siguientes. Es discreta con valores Baja, Media, Moderada y MuyAlta.
 
-Para valorar el preprocesamiento realizado, se generará a cada paso un clasificador logístico y se evaluará con un conjunto de pruebas con la misma estructura que contiene los datos correspondientes a los años 2017 y 2018. Este proceso se realiza desde la pestaña Classify de Weka Explorer. El clasificador seleccionado será Functions.Logistic con la configuración indicada en la figura \ref{fig:classifiers-functions-logistic-config} y utilizando como conjunto de test el archivo alturaolatest.arff, al que previamente se le habrá realizado el mismo tratamiento que al conjunto de entrenamiento.
+Para valorar el preprocesamiento realizado, se generará a cada paso un clasificador logístico y se evaluará con un conjunto de pruebas con la misma estructura que contiene los datos correspondientes a los años 2017 y 2018. Este proceso se realiza desde la pestaña Classify de Weka Explorer. El clasificador seleccionado será Functions.Logistic con la configuración indicada en la figura \ref{fig:classifiers-functions-logistic-config} y utilizando como conjunto de test el archivo \code{alturaolatest.arff}, al que previamente se le habrá realizado el mismo tratamiento que al conjunto de entrenamiento.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.6]{classifiers-functions-logistic-config}
+    \includegraphics[scale=0.4]{classifiers-functions-logistic-config}
     \caption{Configuración del clasificador logístico}
     \label{fig:classifiers-functions-logistic-config}
 \end{figure}
@@ -46,29 +46,38 @@ Como paso previo se han convertido los archivos \code{.csv} a \code{.arff}. Los 
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.28]{altura-ola-orig}
+        \includegraphics[scale=0.29]{altura-ola-orig}
         \caption{Captura de \code{alturaola.arff}.}
         \label{fig:altura-ola-orig}
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.28]{altura-ola-test-orig}
+        \includegraphics[scale=0.29]{altura-ola-test-orig}
         \caption{Captura de \code{alturaolatest.arff}.}
         \label{fig:altura-ola-test-orig}
     \end{minipage}
 \end{figure}
 
-Tras la conversión de los archivos y antes de empezar el tratamiento de los datos, se ha generado y testeado el clasificador logístico para ver el punto de partida. En la figura \ref{fig:clasificador-logistico-resultados-inciiales}
+Tras la conversión de los archivos y antes de empezar el tratamiento de los datos, se ha generado y testeado el clasificador logístico para ver el punto de partida. En la figura \ref{fig:clasificador-logistico-resultados-00} se pueden observar los resultados: se tiene en el punto de partida un $71.9335\%$ de patrones correctamente clasificados y precisión mínima de $0.660$ para la clase ``Media''.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.7]{clasificador-logistico-resultados-iniciales}
+    \includegraphics[scale=0.7]{clasificador-logistico-resultados-00}
     \caption{Resultados del clasificador logístico antes del tratamiento de datos.}
-    \label{fig:clasificador-logistico-resultados-inciiales}
+    \label{fig:clasificador-logistico-resultados-00}
 \end{figure}
 
 \subsection{Datos perdidos}
-Atributos TIDS, VIS y MWD: se eliminan porque tienen 100\% de datos perdidos.
+En primer lugar se eliminan los tres atributos con 100\% de datos perdidos: TIDS, VIS y MWD tanto en el conjunto de entrenamiento como en el de test y se genera de nuevo el clasificador logístico. Como se puede observar en la figura \ref{fig:clasificador-logistico-resultados-01}, la eliminación de los atributos con 100\% de datos perdidos no tiene ningún efecto.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.7]{clasificador-logistico-resultados-01}
+    \caption{Resultados tras eliminar TIDS, VIS y MWD.}
+    \label{fig:clasificador-logistico-resultados-01}
+\end{figure}
+
+A continuación se estudian los campos DPD, APD, PRES y DEWP que tienen respectivamente 
 Atributo DEWP: ¿Eliminar o no?
 
 Reemplazamiento de datos perdidos en DPD, APD, PRES y DEWP (si no se elimina).
