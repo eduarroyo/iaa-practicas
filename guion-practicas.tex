@@ -10,6 +10,7 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{geometry}
 \usepackage{float}
+\usepackage{graphicx}
 
 % Soporte para notas al pié referenciadas desde dentro de una tabla
 \usepackage{footnote}
@@ -28,9 +29,9 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{Eduardo Arroyo Ramírez \\ i12arrae@uco.es}
-\lhead{Introducción al Aprendizaje Automático \\ Memoria de prácticas}
-\lfoot{\rightmark}
+\lhead{\rightmark}
+\rhead{Memoria de Prácticas IAA}
+\lfoot{Eduardo Arroyo Ramírez}
 \rfoot{Página \thepage}
 
 \def\code#1{\texttt{#1}}
@@ -55,12 +56,16 @@
         {\scshape\LARGE Escuela Politécnica Superior \par}
         \vspace{0.5cm}
         {\scshape\Large Universidad de Córdoba \par}
-        \vspace{8cm}
+        
+        \vspace{2cm}
+        \includegraphics[scale=.5]{machine-learning}
+        \vspace{2cm}
+
         {\scshape\Huge Introducción al Aprendizaje Automático \par}
         \vspace{0.5cm}
         {\itshape\LARGE Memoria de prácticas \par}
     \end{center}
-    \vspace{9cm}
+    \vspace{7.5cm}
     \begin{flushright}
         \@author\space \\
         i12arrae@uco.es \\
