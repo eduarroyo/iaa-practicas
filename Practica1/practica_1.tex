@@ -12,7 +12,7 @@ Para la realización de la tarea he tomado la decisión de editar manualmente lo
 Para conocer los identificadores y tipos de los atributos de cada base de datos he consultado el archivo \code{.names} del directorio de descarga de cada base de datos, que contiene el listado de campos con su nombre, su tipo y sus posibles valores, si procede. He consultado la especificación del formato \code{.arff} en la \href{https://www.cs.waikato.ac.nz/ml/weka/arff.html}{página correspondiente del manual de weka}. Como puede comprobarse en la figura \ref{fig:ejemplo-arff}, un archivo \code{.arff} consta de tres secciones:
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.65]{ejemplo-archivo-arff}
+    \includegraphics[scale=0.5]{ejemplo-archivo-arff}
     \caption{Ejemplo de archivo \code{.arff}}
     \label{fig:ejemplo-arff}
 \end{figure}
@@ -46,13 +46,13 @@ Tras aplicar el tratamiento mencionado en el apartado \ref{ssc:consideraciones-g
 \end{enumerate}
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.37]{breast-cancer-arff}
+    \includegraphics[scale=0.45]{breast-cancer-arff}
     \caption{Captura del archivo \code{breast-cancer.arff}.}
     \label{fig:breast-cancer-arff}
 \end{figure}
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.37]{breast-cancer-weka}
+    \includegraphics[scale=0.42]{breast-cancer-weka}
     \caption{Archivo \code{breast-cancer.arff} cargado en Weka.}
     \label{fig:breast-cancer-weka}
 \end{figure}
@@ -137,7 +137,7 @@ Para ilustrar el comportamiento del filtro observaremos cómo cambian las frecue
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.42]{unsupervised-resample}
+    \includegraphics[scale=0.45]{unsupervised-resample}
     \caption{Configuración del filtro \code{unsupervised/Resmaple}.}
     \label{fig:unsupervised-resample}
 \end{figure}
@@ -463,7 +463,7 @@ En la tabla \ref{tab:supervised-resample-bias1-dist} aparecen los datos de los d
 \end{table}
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.60]{supervised-resample-bias1-dist}
+    \includegraphics[scale=0.50]{supervised-resample-bias1-dist}
     \caption{Frecuencias de clases al hacer resamples con \code{biasToUniformClass=1}}
     \label{fig:supervised-resample-bias1-dist}
 \end{figure}
@@ -474,7 +474,7 @@ El filtro supervisado \code{ClassBalancer} asigna pesos ponderados a los patrone
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.45]{supervised-class-balancer}
+    \includegraphics[scale=0.35]{supervised-class-balancer}
     \caption{Diálogo de configuración del filtro supervisado \code{ClassBalancer}}
     \label{fig:supervised-class-balancer}
 \end{figure}
@@ -510,13 +510,13 @@ Al aplicar el filtro, se ha añadido un nuevo campo llamado \code{Weight 1} con 
     \centering
     \begin{minipage}{0.50\textwidth}
         \centering
-        \includegraphics[scale=0.7]{supervised-class-balancer-int2}
+        \includegraphics[scale=0.5]{supervised-class-balancer-int2}
         \caption{Datos balanceados en dos intervalos.}
         \label{fig:supervised-class-balancer-int2}
     \end{minipage}\hfill
     \begin{minipage}{0.50\textwidth}
         \centering
-        \includegraphics[scale=0.7]{supervised-class-balancer-int5}
+        \includegraphics[scale=0.5]{supervised-class-balancer-int5}
         \caption{Datos balanceados en cinco intervalos.}
         \label{fig:supervised-class-balancer-int5}
     \end{minipage}
