@@ -77,24 +77,49 @@ En primer lugar se eliminan los tres atributos con 100\% de datos perdidos: TIDS
     \label{fig:clasificador-logistico-resultados-01}
 \end{figure}
 
-A continuación se estudian los campos DPD, APD, PRES y DEWP que tienen respectivamente 8 (<1\%), 8 (<1\%), 553 (16\%) y 1189 (33\%) patrones con datos perdidos.
+A continuación se estudian los campos con valores perdidos que son en entrenamiento DPD, APD, PRES y DEWP con 8 (<1\%), 8 (<1\%), 553 (16\%) y 1189 (33\%) patrones con datos perdidos respectivamente y en pruebas WSPD, GST, DPD, APD, PRES, ATMP, WTMP Y DEWP . Para estos casos se reemplazan los valores perdidos por la media de la clase calculada sobre el conjunto de entrenamiento tanto para el conjunto de entrenamiento como para el conjunto de generalización. Se realiza este procedimiento siguiendo el consejo del archivo \code{Imputación de valores perdidos mas justa en training y test.pdf}, aunque sospecho que puede contribuir al sobreajuste del modelo.
 
-El atributo con más datos perdidos es DEWP. El siguiente paso será ver cómo afecta a los resultados la eliminación de este atributo y decidir si la información que aporta justifica que se mantenga. Tras realizar la prueba correspondiente (fig. \ref{fig:clasificador-logistico-resultados-02}), se observa que los patrones correctamente clasificados bajan muy levemente (sólo 7 patrones correctamente clasificados menos, de un total de 2886), por lo que probablemente la mejor decisión sea eliminar el atributo, ya que obviarlo apenas afecta a los resultados.
-
-\begin{figure}[ht]
+\begin{table}[ht]
     \centering
-    \includegraphics[trim={0cm 10.4cm 7cm 0.7cm},clip]{clasificador-logistico-resultados-02}
-    \caption{Resultados tras eliminar DEWP.}
-    \label{fig:clasificador-logistico-resultados-02}
-\end{figure}
-
-El siguiente paso ha sido reemplazar los datos perdidos de los atributos DPD, APD y PRES utilizando el filtro ReplaceMissingValues tanto en el conjunto de entrenamiento como el de prueba. Como se puede observar en la figura \ref{fig:clasificador-logistico-resultados-03}, los resultados no han mejorado respecto al paso anterior.
+    \begin{tabular}{|r|rlrl|rrrr|}
+    \hline
+      \multicolumn{1}{|c|}{} &
+      \multicolumn{4}{c|}{Datos perdidos} &
+      \multicolumn{4}{c|}{Medias en entrenamiento} \\
+      \multicolumn{1}{|c|}{Atributo} &
+      \multicolumn{2}{c}{Entrenamiento} &
+      \multicolumn{2}{c|}{Test} &
+      \multicolumn{1}{c}{Baja} &
+      \multicolumn{1}{c}{Media} &
+      \multicolumn{1}{c}{Moderada} &
+      \multicolumn{1}{c|}{MuyAlta} \\ \hline
+      WSPD & 0    & (0\%)  & 1    & (<1\%)  & 4,6    & 6,6    & 8,4    & 11,9   \\ 
+      GST  & 0    & (0\%)  & 9    & (<1\%)  & 5,6    & 8,1    & 10,5   & 14,9   \\
+      DPD  & 8    & (<1\%) & 21   & (1\%)   & 11,5   & 10,3   & 10,8   & 11,7   \\
+      APD  & 8    & (<1\%) & 21   & (1\%)   & 6,5    & 6,7    & 7,0    & 7,7    \\
+      PRES & 553  & (16\%) & 6    & (<1\%)  & 1017,8 & 1013,1 & 1008,7 & 1007,2 \\
+      ATMP & 0    & (0\%)  & 3    & (<1\%)  & 11,5   & 9,9    & 7,8    & 7,4    \\
+      WTMP & 0    & (0\%)  & 7    & (<1\%)  & 12,3   & 10,8   & 8,8    & 8,2    \\
+      DEWP & 1189 & (33\%) & 2886 & (100\%) & 8,9    & 7,1    & 4,8    & 4,8    \\\hline
+    \end{tabular}
+    \caption{Datos perdidos y medias de atributos en entrenamiento por clase.}
+    \label{tab:medias-por-clase}
+\end{table}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[trim={0cm 10.4cm 6.9cm 0.7cm},clip]{clasificador-logistico-resultados-03}
     \caption{Resultados tras reemplazar datos perdidos de DPD, APD y PRES.}
-    \label{fig:clasificador-logistico-resultados-03}
+    \label{fig:clasificador-logistico-resultados-02a}
+\end{figure}
+
+Respecto al atributo DEWP que tiene el 33\% de datos perdidos en entrenamiento y el 33\% en generalización, se compara el resultado del clasificador con y sin el atributo para tener una idea de cómo afecta. Finalmente se ha apostado por quitar el atributo ya que la falta de datos es tal que no nos permite evaluar correctamente la bondad del clasificador.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[trim={0cm 10.4cm 7cm 0.7cm},clip]{clasificador-logistico-resultados-02}
+    \caption{Resultados tras eliminar DEWP.}
+    \label{fig:clasificador-logistico-resultados-02b}
 \end{figure}
 
 \subsection{Unificación de medidas}

@@ -1,4 +1,4 @@
-@relation 'AlturaOla-Test-weka.filters.unsupervised.attribute.Remove-R11,16-17'
+@relation AlturaOla-Test
 
 @attribute air numeric
 @attribute pres numeric

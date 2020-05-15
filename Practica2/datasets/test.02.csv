@@ -1,22 +1,3 @@
-@relation AlturaOla-Test
-
-@attribute air numeric
-@attribute pres numeric
-@attribute rhum numeric
-@attribute uwnd numeric
-@attribute vwnd numeric
-@attribute WDIR numeric
-@attribute WSPD numeric
-@attribute GST numeric
-@attribute DPD numeric
-@attribute APD numeric
-@attribute PRES numeric
-@attribute ATMP numeric
-@attribute WTMP numeric
-@attribute DEWP numeric
-@attribute Class_WVHT {Baja,Media,Moderada,MuyAlta}
-
-@data
 279.200012,103960,74,7.500001,-8.099998,320,9.4,11.6,9.09,7.35,1039.1,5.6,6.2,4.81616161616162,Moderada
 278.700012,104050,80,3.3,-7.699998,311,8,9.3,14.81,6.67,1040.3,5.6,6.2,4.81616161616162,Moderada
 278.200012,104050,88,2.9,-5.399997,327,5.6,7.2,12.9,6.99,1040.3,5.4,6.1,7.09206128133705,Media

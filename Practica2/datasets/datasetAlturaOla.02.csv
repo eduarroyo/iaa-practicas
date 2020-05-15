@@ -1,22 +1,4 @@
-@relation AlturaOla
-
-@attribute air numeric
-@attribute pres numeric
-@attribute rhum numeric
-@attribute uwnd numeric
-@attribute vwnd numeric
-@attribute WDIR numeric
-@attribute WSPD numeric
-@attribute GST numeric
-@attribute DPD numeric
-@attribute APD numeric
-@attribute PRES numeric
-@attribute ATMP numeric
-@attribute WTMP numeric
-@attribute DEWP numeric
-@attribute Class_WVHT {Baja,Media,Moderada,MuyAlta}
-
-@data
+air,pres,rhum,uwnd,vwnd,WDIR,WSPD,GST,DPD,APD,PRES,ATMP,WTMP,DEWP,Class_WVHT
 285.299988,101320,92,8,2.699997,256,6.2,7.1,11.5239534883721,6.45009615384615,1012.7,13,13.4,11.4,Baja
 285.400024,101190,89,5.300003,2.800003,223,4.2,4.9,7.69,5.16,1011.7,13,13.4,11.2,Baja
 285.900024,101050,85,3,3.900009,206,3.1,3.8,7.69,5.23,1011.2,13.2,13.8,10.5,Baja
