@@ -1,0 +1,101 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4
+Relation:     AlturaOla
+Instances:    3559
+Attributes:   15
+              air
+              pres
+              rhum
+              uwnd
+              vwnd
+              WDIR
+              WSPD
+              GST
+              DPD
+              APD
+              PRES
+              ATMP
+              WTMP
+              DEWP
+              Class_WVHT
+Test mode:    user supplied test set:  size unknown (reading incrementally)
+
+=== Classifier model (full training set) ===
+
+Logistic Regression with ridge parameter of 1.0E-8
+Coefficients...
+                Class
+Variable         Baja     Media  Moderada
+=========================================
+air           -0.7867   -0.4493   -0.1986
+pres           0.0007   -0.0001   -0.0002
+rhum          -0.0109    0.0047    0.0139
+uwnd          -0.1277   -0.0208     0.012
+vwnd          -0.1801   -0.1059   -0.0493
+WDIR           0.0039     0.001    -0.001
+WSPD           0.5347   -0.2104   -0.2693
+GST           -2.3347   -0.9663   -0.3389
+DPD            0.3479    0.2399    0.1488
+APD           -5.7489    -3.789   -1.9913
+PRES           0.1018    0.0989    0.0545
+ATMP           0.2289    0.1661    0.2467
+WTMP           0.7362    0.4399    0.0646
+DEWP            0.328    0.1474   -0.0519
+Intercept     93.1055   69.1411   40.4446
+
+
+Odds Ratios...
+                Class
+Variable         Baja     Media  Moderada
+=========================================
+air            0.4554    0.6381    0.8199
+pres           1.0007    0.9999    0.9998
+rhum           0.9891    1.0047     1.014
+uwnd           0.8801    0.9795     1.012
+vwnd           0.8352    0.8995    0.9519
+WDIR           1.0039     1.001     0.999
+WSPD            1.707    0.8102    0.7639
+GST            0.0968    0.3805    0.7125
+DPD            1.4161    1.2711    1.1605
+APD            0.0032    0.0226    0.1365
+PRES           1.1072    1.1039     1.056
+ATMP           1.2573    1.1807    1.2798
+WTMP            2.088    1.5526    1.0667
+DEWP           1.3883    1.1588    0.9494
+
+
+Time taken to build model: 0.73 seconds
+
+=== Evaluation on test set ===
+
+Time taken to test model on supplied test set: 0.09 seconds
+
+=== Summary ===
+
+Correctly Classified Instances        2160               74.8441 %
+Incorrectly Classified Instances       726               25.1559 %
+Kappa statistic                          0.654 
+Mean absolute error                      0.1766
+Root mean squared error                  0.2972
+Relative absolute error                 48.2634 %
+Root relative squared error             69.3595 %
+Total Number of Instances             2886     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,792    0,052    0,823      0,792    0,807      0,750    0,964     0,891     Baja
+                 0,773    0,170    0,701      0,773    0,735      0,590    0,884     0,756     Media
+                 0,675    0,101    0,720      0,675    0,697      0,586    0,900     0,741     Moderada
+                 0,761    0,031    0,810      0,761    0,785      0,749    0,969     0,872     MuyAlta
+Weighted Avg.    0,748    0,103    0,751      0,748    0,749      0,650    0,920     0,801     
+
+=== Confusion Matrix ===
+
+   a   b   c   d   <-- classified as
+ 534 140   0   0 |   a = Baja
+ 109 758 112   2 |   b = Media
+   5 180 540  75 |   c = Moderada
+   1   4  98 328 |   d = MuyAlta
+
