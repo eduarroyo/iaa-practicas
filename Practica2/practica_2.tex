@@ -77,7 +77,7 @@ En primer lugar se eliminan los tres atributos con 100\% de datos perdidos: TIDS
     \label{fig:clasificador-logistico-resultados-01}
 \end{figure}
 
-A continuación se estudian los campos con valores perdidos que son en entrenamiento DPD, APD, PRES y DEWP con 8 (<1\%), 8 (<1\%), 553 (16\%) y 1189 (33\%) patrones con datos perdidos respectivamente y en pruebas WSPD, GST, DPD, APD, PRES, ATMP, WTMP Y DEWP . Para estos casos se reemplazan los valores perdidos por la media de la clase calculada sobre el conjunto de entrenamiento tanto en el conjunto de entrenamiento como en el conjunto de generalización (ver cuadro \ref{tab:medias-por-clase}). Se realiza este procedimiento siguiendo el consejo del archivo \code{Imputación de valores perdidos mas justa en training y test.pdf}, aunque me preocupa en qué medida contribuirá al rendimiento del modelo cuando se exponga a datos nuevos.
+A continuación se estudian los campos con valores perdidos que son en entrenamiento DPD, APD, PRES y DEWP con 8 (<1\%), 8 (<1\%), 553 (16\%) y 1189 (33\%) patrones con datos perdidos respectivamente y en pruebas WSPD, GST, DPD, APD, PRES, ATMP, WTMP Y DEWP. Para estos casos se reemplazan los valores perdidos por la media de la clase calculada sobre el conjunto de entrenamiento tanto en el conjunto de entrenamiento como en el conjunto de generalización (ver cuadro \ref{tab:medias-por-clase}). Se realiza este procedimiento siguiendo el consejo del archivo \code{Imputación de valores perdidos mas justa en training y test.pdf}, aunque me preocupa en qué medida contribuirá al rendimiento del modelo cuando se exponga a datos nuevos.
 
 \begin{table}[ht]
     \centering
@@ -110,18 +110,17 @@ Una vez reemplazados todos los datos perdidos se obtienen en el clasificador los
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{clasificador-logistico-resultados-03}
+    \includegraphics[scale=0.8]{clasificador-logistico-resultados-02}
     \caption{Resultados tras reemplazar los datos perdidos}
     \label{fig:clasificador-logistico-resultados-02b}
 \end{figure}
 
+\subsection{Unificación de medidas}
+El siguiente paso a seguir será la estandarización de las unidades de medida de los atributos que representan la misma magnitud. En nuestro dataset tenemos dos pares de atributos que representan temperatura y presión respectivamente, y utilizan diferentes unidades (ºC/ºK por un lado y HPas/Pas), por lo que correspondería a unificarlas utilizando el Sistema Internacional. No obstante, en la siguiente sección veremos que dichos pares de variables están fuertemente correlacionados entre sí por lo que serán eliminados, ahorrándonos el esfuerzo de la conversión de los datos.
+
 
 \subsection{Selección de características}
 
-
-\subsection{Unificación de medidas}
-Convertir ºC a ºK
-Convertir HPas a Pas
 
 \subsection{Normalización}
 
