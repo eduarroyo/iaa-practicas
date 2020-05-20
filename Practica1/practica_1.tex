@@ -510,13 +510,13 @@ Al aplicar el filtro, se ha añadido un nuevo campo llamado \code{Weight 1} con 
     \centering
     \begin{minipage}{0.50\textwidth}
         \centering
-        \includegraphics[scale=0.5]{supervised-class-balancer-int2}
+        \includegraphics[scale=0.43]{supervised-class-balancer-int2}
         \caption{Datos balanceados en dos intervalos.}
         \label{fig:supervised-class-balancer-int2}
     \end{minipage}\hfill
     \begin{minipage}{0.50\textwidth}
         \centering
-        \includegraphics[scale=0.5]{supervised-class-balancer-int5}
+        \includegraphics[scale=0.43]{supervised-class-balancer-int5}
         \caption{Datos balanceados en cinco intervalos.}
         \label{fig:supervised-class-balancer-int5}
     \end{minipage}
@@ -535,46 +535,46 @@ Como se puede observar en la fig. \ref{fig:supervised-spread-subsample}, el filt
     \item \code{randomSeed (num)}: semilla para la selección aleatoria.
 \end{itemize}
 
-
 \begin{figure}[H]
     \centering
-    \begin{minipage}{0.50\textwidth}
-        \centering
-        \includegraphics[scale=0.4]{supervised-spread-subsample}
-        \caption{Configuración del filtro supervisado \code{SpreadSubsample}.}
-        \label{fig:supervised-spread-subsample}
-    \end{minipage}\hfill
-    \begin{minipage}{0.50\textwidth}
-        \centering
-        \includegraphics[scale=0.44 ]{supervised-spread-subsample-breast-cancer}
-        \caption{Distribución inicial de la clase en la base de datos \code{breast-cancer}.}
-        \label{fig:supervised-spread-subsample-breast-cancer}
-    \end{minipage}
+    \includegraphics[scale=0.35]{supervised-spread-subsample}
+    \caption{Configuración del filtro supervisado \code{SpreadSubsample}.}
+    \label{fig:supervised-spread-subsample}
 \end{figure}
 
-Para probar este filtro se utiliza la base de datos \code{breast-cancer} por ser su clase binaria y con una distribución 201-85 (fig. \ref{fig:supervised-spread-subsample-breast-cancer}). En una primera prueba, con los parámetros por defecto, no se ha visto ningún cambio en la base de datos al aplicar el filtro. El primer cambio introducido ha sido el valor 50 en el parámetro \code{maxCount}, lo que ha producido subsampling que ha igualado el nº de patrones de cada clase a 50 (fig. \ref{fig:supervised-spread-subsample-max50}). La segunda prueba ha consistido en fijar de nuevo \code{maxCount} a 0 y colocar un 1 en \code{distributionSpread}. Esta configuración sirve para que la proporción máxima entre las clases sea $1:1$, así que también equilibra la distribución de las clases, eliminando patrones de la clase mayoritaria hasta quedar tantos como tenga la minoritaria (fig. \ref{fig:supervised-spread-subsample-spr1}).
+Para probar este filtro se utiliza la base de datos \code{breast-cancer} por ser su clase binaria y con una distribución 201-85 (fig. \ref{fig:supervised-spread-subsample-breast-cancer}). En una primera prueba, con los parámetros por defecto, no se ha visto ningún cambio en la base de datos al aplicar el filtro. El primer cambio introducido ha sido el valor 50 en el parámetro \code{maxCount}, lo que ha producido subsampling que ha igualado el nº de patrones de cada clase a 50 (fig. \ref{fig:supervised-spread-subsample-max50}).
 
 
 \begin{figure}[H]
     \centering
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.40 ]{supervised-spread-subsample-breast-cancer}
+        \caption{Distribución inicial de la clase en la base de datos \code{breast-cancer}.}
+        \label{fig:supervised-spread-subsample-breast-cancer}
+    \end{minipage}\hfill
     \begin{minipage}{0.50\textwidth}
         \centering
         \includegraphics[scale=0.44]{supervised-spread-subsample-max50}
         \caption{Resultado del filtro con\\\code{distributionSpread=0} y \code{maxCount=50}.}
         \label{fig:supervised-spread-subsample-max50}
-    \end{minipage}\hfill
-    \begin{minipage}{0.50\textwidth}
-        \centering
-        \includegraphics[scale=0.44]{supervised-spread-subsample-spr1}
-        \caption{Resultado del filtro con\\\code{distributionSpread=1}\\ y \code{maxCount=0}.}
-        \label{fig:supervised-spread-subsample-spr1}
     \end{minipage}
 \end{figure}
 
-Por último, se establece \code{distributionSpread} a 1.5 con el fin de obtener una proporción $3:2$. Deberíamos tener 3 patrones de la clase \code{no-recurrence-events} por cada dos de la clase \code{recurrence-events}. Una vez aplicado el filtro con la configuración indicada (fig. \ref{fig:supervised-spread-subsample-spr1.5}), vemos que el resultado es el esperado: 127 frente a 85 patrones de cada clase.
-\begin{figure}[ht]
+La segunda prueba ha consistido en fijar de nuevo \code{maxCount} a 0 y \code{distributionSpread}a 1. Esta configuración sirve para que la proporción máxima entre las clases sea $1:1$, así que también equilibra la distribución de las clases, eliminando patrones de la clase mayoritaria hasta quedar tantos como tenga la minoritaria (fig. \ref{fig:supervised-spread-subsample-spr1}). Por último, se establece \code{distributionSpread} a 1.5 con el fin de obtener una proporción $3:2$. Deberíamos tener 3 patrones de la clase \code{no-recurrence-events} por cada dos de la clase \code{recurrence-events}. Una vez aplicado el filtro con la configuración indicada (fig. \ref{fig:supervised-spread-subsample-spr1.5}), vemos que el resultado es el esperado: 127 frente a 85 patrones de cada clase.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=0.45]{supervised-spread-subsample-spr15}
-    \caption{Resultado del filtro con \code{distributionSpread=1.5}.}
-    \label{fig:supervised-spread-subsample-spr1.5}
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.44]{supervised-spread-subsample-spr1}
+        \caption{Resultado del filtro con\\\code{distributionSpread=1} y \code{maxCount=0}.}
+        \label{fig:supervised-spread-subsample-spr1}
+    \end{minipage}\hfill
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[scale=0.45]{supervised-spread-subsample-spr15}
+        \caption{Resultado del filtro con \\ \code{distributionSpread=1.5}.}
+        \label{fig:supervised-spread-subsample-spr1.5}
+    \end{minipage}
 \end{figure}
