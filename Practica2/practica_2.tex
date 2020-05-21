@@ -202,7 +202,49 @@ En resumen, se han eliminado los atributos \code{pres}, \code{WSPD}, \code{air} 
 
 
 \subsection{Normalización}
+El siguiente paso del preprocesamiento consiste en normalizar los datos tanto de entrenamiento como de generalización. Queremos llevar cada atributo a un rango $[0-1]$ en entrenamiento y luego aplicar la misma transformación al conjunto de generalización. Para ello, aplicaremos la fórmula \ref{formula:normalizacion} a cada atributo de ambos conjuntos pero utilizando siempre los máximos y mínimos del conjunto de entrenamiento, tal como aparecen en la tabla \ref{cuadro:maximos-minimos-normalizacion}. El proceso se realizará mediante el filtro \code{MathExpression}, campo a campo. Para el conjunto de entrenamiento se obtiene el mismo resultado utilizando el filtro \code{Normalize}.
+\begin{equation} \label{formula:normalizacion}
+    a^*=\frac{a-a_{min}}{a_{max}-a_{min}}
+\end{equation}
 
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|r|r|r|r|r|r|r|r|}
+    \hline
+    \rowcolor[HTML]{9B9B9B} 
+    {\color[HTML]{FFFFFF} } & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} pres}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} vwnd}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} WDIR}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} GST}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} APD}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} ATMP}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} WTMP}} \\ \hline
+    \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} min} & 96020 & -17,9 & 0 & 0,4 & 3,10 & -0,9 & 6 \\ \cline{1-1}
+    \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} max} & 103850 & 21,1 & 359 & 26,1 & 11,09 & 15,8 & 16,1 \\ \cline{1-1}
+    \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} ran} & 7830 & 39,0 & 359 & 25,7 & 7,99 & 16,7 & 10,1 \\ \hline
+    \end{tabular}
+    \caption{}
+    \label{cuadro:maximos-minimos-normalizacion}
+\end{table}
+
+Como se puede comprobar en la figura \ref{fig:clasificador-logistico-resultados-05}, el proceso de normalización ha provocado un empeoramiento generalizado del rendimiento del clasificador, con casi un 4\% menos de patrones correctamente clasificados. No tengo claro que necesariamente cualquier clasificador deba ser mejor con datos normalizados. A la vista de que el clasificador logístico que estamos utilizando para evaluar los efectos del preprocesamiento no se ve beneficiado por la normalización de nuestro conjunto de datos, continúo con los datos sin normalizar.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{clasificador-logistico-resultados-05}
+    \caption{Resultados tras normalización de datos}
+    \label{fig:clasificador-logistico-resultados-05}
+\end{figure}
 
 \subsection{Datos extremos}
+Para la detección de valores extremos, haremos uso del filtro \code{InterquartileRange}. Este filtro añade a la base de datos un par de atributos para indicar si el patrón es un dato extremo o atípico (outlier). Según las transparencias, se consideran valores extremos aquellos que estén a más del doble del rango intercuartílico por debajo del cuartil 1 o por encima del cuartil 3. Aplicando la configuración correspondiente al filtro de Weka, podemos ver que aparecen 33 patrones con datos extremos tal como se muestra en la figura \ref{fig:valores-extremos}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{valores-extremos}
+    \caption{Detección de valores extremos con Weka}
+    \label{fig:valores-extremos}
+\end{figure}
+A continuación eliminaremos los patrones con \code{ExtremeValue=yes} utilizando el filtro \code{RemoveWithValues} y posteriormente eliminaremos el atributo \code{ExtremeValues} para poder ejecutar el clasificador logístico con el conjunto de generalización. En dicha ejecución se han obtenido los valores que aparecen en la figura \ref{fig:clasificador-logistico-resultados-06}.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{clasificador-logistico-resultados-06}
+    \caption{Resultados tras eliminación de valores extremos}
+    \label{fig:clasificador-logistico-resultados-06}
+\end{figure}
+
+De nuevo observamos un ligero empeoramiento respecto a los resultados de partida (ver fig. \ref{fig:clasificador-logistico-resultados-04}), por lo que no parece conveniente, en este caso, eliminar los valores extremos. Esto parece lógico ya que también hay valores de este tipo en el conjunto de test, y si el modelo no los aprende, difícilmente podrá luego clasificarlos en generalización.
