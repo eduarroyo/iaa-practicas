@@ -76,6 +76,7 @@ En primer lugar se eliminan los tres atributos con 100\% de datos perdidos: TIDS
     \caption{Resultados tras eliminar TIDS, VIS y MWD.}
     \label{fig:clasificador-logistico-resultados-01}
 \end{figure}
+% Datos en alturaola.02.datos-perdidos-a.arff y alturaolatest.02-datos-perdidos-a.arff
 
 A continuación se estudian los campos con valores perdidos que son en entrenamiento DPD, APD, PRES y DEWP con 8 (<1\%), 8 (<1\%), 553 (16\%) y 1189 (33\%) patrones con datos perdidos respectivamente y en pruebas WSPD, GST, DPD, APD, PRES, ATMP, WTMP Y DEWP. Para estos casos se reemplazan los valores perdidos por la media de la clase calculada sobre el conjunto de entrenamiento tanto en el conjunto de entrenamiento como en el conjunto de generalización (ver cuadro \ref{tab:medias-por-clase}). Se realiza este procedimiento siguiendo el consejo del archivo \code{Imputación de valores perdidos mas justa en training y test.pdf}, aunque me preocupa en qué medida contribuirá al rendimiento del modelo cuando se exponga a datos nuevos.
 
@@ -107,6 +108,7 @@ A continuación se estudian los campos con valores perdidos que son en entrenami
 \end{table}
 
 Una vez reemplazados todos los datos perdidos se obtienen en el clasificador los resultados mostrados en la figura \ref{fig:clasificador-logistico-resultados-02b}, en los que se observa una mejora en las métricas del clasificador. Por ejemplo, el CCR sube casi un 3\%, la mínima sensibilidad aumenta ligeramente y el área bajo la curva ROC aumenta para tres de las cuatro clases.
+% Datos en alturaola.02.datos-perdidos-b.arff y alturaolatest.02-datos-perdidos-b.arff
 
 \begin{figure}[ht]
     \centering
@@ -116,11 +118,74 @@ Una vez reemplazados todos los datos perdidos se obtienen en el clasificador los
 \end{figure}
 
 \subsection{Unificación de medidas}
-El siguiente paso a seguir será la estandarización de las unidades de medida de los atributos que representan la misma magnitud. En nuestro dataset tenemos dos pares de atributos que representan temperatura y presión respectivamente, y utilizan diferentes unidades (ºC/ºK por un lado y HPas/Pas), por lo que correspondería a unificarlas utilizando el Sistema Internacional. No obstante, en la siguiente sección veremos que dichos pares de variables están fuertemente correlacionados entre sí por lo que serán eliminados, ahorrándonos el esfuerzo de la conversión de los datos.
-
+El siguiente paso a seguir será la estandarización de las unidades de medida de los atributos que representan la misma magnitud. En nuestro dataset tenemos dos pares de atributos que representan temperatura y presión respectivamente, y utilizan diferentes unidades (ºC/ºK por un lado y HPas/Pas), por lo que correspondería a unificarlas. Las transformaciones se han realizado mediante el filtro \code{MathExpression}. Primero se han pasado a Pascales los valores del atributo PRES que estaban en HPas y seguidamente se han pasado a ºC los valores del atributo \code{air} que se encontraban en ºK. Como era de esperar, estas operaciones no han tenido ningún efecto sobre el resultado del clasificador.
+% Datos en alturaola.03.unidades.arff y alturaolatest.03.unidades.arff
 
 \subsection{Selección de características}
+En esta etapa del preprocesamiento vamos a intentar detectar los atributos que influyen muy poco en la clase (atributos irrelevantes) para así eliminarlos y simplificar el modelo. Del mismo modo, intentaremos identificar pares de atributos con una correlación alta (atributos redundantes) para prescindir, de entre los dos, de el que menos influya en la clase.
 
+\subsubsection{Análisis de atributos irrelevantes}
+Para medir la influencia de cada atributo sobre la clase del dataset en Weka utilizaremos el evaluador de atributos \code{CorrelationAttributeEval} en combinación con \code{Ranker} como método de búsqueda en la pestaña ``Select attributes'' del explorador de Weka. La salida de este análisis se puede ver en la figura \ref{fig:correlation-attribute-eval}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.51]{03-correlation-attribute-eval}
+    \caption{Resultados de \code{CorrelationAttributeEval}}
+    \label{fig:correlation-attribute-eval}
+\end{figure}
+
+Lo siguiente será eliminar uno por uno atributos desde el menos influyente (\code{rhum}) hacia arriba comprobando el resultado del clasificador logístico hasta que comience a empeorar. Se eliminan \code{rhum} y \code{uwnd} para alcanzar un $CCR=75,23\%$ (fig. \ref{fig:03-quitar-irrelevantes}), pero al eliminar \code{WDIR} vemos que empeora, por lo que paramos ahí. No estoy seguro de si este paso para reducir la complejidad conviene o no conviene en este caso ya que a pesar de la leve mejora del CCR, vemos en la matriz de confusión que la única clase que ha mejorado en nº de patrones bien clasificados es \code{Media}, que ya era la que mejor clasificaba, a costa de un empeoramiento en el resto. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{03-quitar-irrelevantes}
+    \caption{Resultados tras eliminar atributos irrelevantes}
+    \label{fig:03-quitar-irrelevantes}
+\end{figure}
+
+
+\subsubsection{Análisis de atributos redundantes}
+A continuación se estudiará la correlación entre atributos. Para realizar este análisis en Weka utilizamos el evaluador de atributos \code{PrincipalComponents} junto con el buscador \code{Ranker}. Podemos ver la tabla de correlaciones obtenida en el cuadro \ref{cuadro:correlaciones}, en el que se han marcado en rojo, naranja y amarillo las correlaciones por encima de 0,6 según su importancia (rojo la más importante). El proceso de eliminación de atributos correlados será el siguiente:
+\begin{enumerate}
+    \item Elegir un par atributos con correlación alta.
+    \item Del par elegido, eliminar el atributo menos correlado con la clase según la figura \ref{fig:correlation-attribute-eval}.
+    \item Generar y evaluar el clasificador logístico.
+    \begin{enumerate}
+        \item Si el resultado mejora, se mantiene la eliminación del atributo.
+        \item Si no mejora, se restituye el atributo.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{table}[]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|
+    >{\columncolor[HTML]{9B9B9B}}c |rrrrrrrrrrrr|}
+    \hline
+    \cellcolor[HTML]{FFFFFF}{\color[HTML]{FFFFFF} } & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} air}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} pres}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} vwnd}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} WDIR}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} WSPD}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} GST}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} DPD}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} APD}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} PRES}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} ATMP}} & \multicolumn{1}{c}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} WTMP}} & \multicolumn{1}{c|}{\cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} DEWP}} \\ \hline
+    {\color[HTML]{FFFFFF} air} & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & 0,23 & -0 & 0,1 & -0,15 & -0,18 & -0,34 & -0,44 & 0,23 & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,98} & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,94} & \cellcolor[HTML]{F8A102}{\color[HTML]{FFFFFF} 0,77} \\
+    {\color[HTML]{FFFFFF} pres} & 0,23 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & -0,2 & 0,25 & -0,34 & -0,37 & -0,26 & -0,43 & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,95} & 0,26 & 0,26 & 0,22 \\
+    {\color[HTML]{FFFFFF} vwnd} & -0 & -0,2 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & -0,15 & 0,31 & 0,31 & 0,07 & 0,13 & -0,2 & -0,01 & -0,12 & 0,08 \\
+    {\color[HTML]{FFFFFF} WDIR} & 0,1 & 0,25 & -0,15 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & -0,06 & -0,07 & -0,04 & -0,09 & 0,17 & 0,14 & 0,2 & 0,05 \\
+    {\color[HTML]{FFFFFF} WSPD} & -0,15 & -0,34 & 0,31 & -0,06 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,99} & 0,02 & 0,1 & -0,34 & -0,17 & -0,21 & -0,18 \\
+    {\color[HTML]{FFFFFF} GST} & -0,18 & -0,37 & 0,31 & -0,07 & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,99} & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & 0,04 & 0,14 & -0,36 & -0,2 & -0,23 & -0,21 \\
+    {\color[HTML]{FFFFFF} DPD} & -0,34 & -0,26 & 0,07 & -0,04 & 0,02 & 0,04 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & \cellcolor[HTML]{F8A102}{\color[HTML]{FFFFFF} 0,71} & -0,27 & -0,33 & -0,31 & -0,3 \\
+    {\color[HTML]{FFFFFF} APD} & -0,44 & -0,43 & 0,13 & -0,09 & 0,1 & 0,14 & \cellcolor[HTML]{F8A102}{\color[HTML]{FFFFFF} 0,71} & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & -0,45 & -0,44 & -0,44 & -0,41 \\
+    {\color[HTML]{FFFFFF} PRES} & 0,23 & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,95} & -0,2 & 0,17 & -0,34 & -0,36 & -0,27 & -0,45 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & 0,24 & 0,25 & 0,2 \\
+    {\color[HTML]{FFFFFF} ATMP} & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,98} & 0,26 & -0,01 & 0,14 & -0,17 & -0,2 & -0,33 & -0,44 & 0,24 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,95} & \cellcolor[HTML]{F8A102}{\color[HTML]{FFFFFF} 0,76} \\
+    {\color[HTML]{FFFFFF} WTMP} & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,94} & 0,26 & -0,12 & 0,2 & -0,21 & -0,23 & -0,31 & -0,44 & 0,25 & \cellcolor[HTML]{FE0000}{\color[HTML]{FFFFFF} 0,95} & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} & \cellcolor[HTML]{FFC702}0,66 \\
+    {\color[HTML]{FFFFFF} DEWP} & \cellcolor[HTML]{F8A102}{\color[HTML]{FFFFFF} 0,77} & 0,22 & 0,08 & 0,05 & -0,18 & -0,21 & -0,3 & -0,41 & 0,2 & \cellcolor[HTML]{F8A102}{\color[HTML]{FFFFFF} 0,76} & \cellcolor[HTML]{FFC702}0,66 & \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} 1} \\ \hline
+    \end{tabular}%
+    }
+    \caption{Correlaciones entre atributos}
+    \label{cuadro:correlaciones}
+\end{table}
+
+Procesadas: 
+Quitar WSPD: la más alta correlación
+
+Saltadas: ATMP hace empeorar
+
+El primer par procesado ha sido \code{pres-PRES} porque tiene una altísima correlación y no es de los atributos más influyentes sobre la clase, pero principalmente porque representan la misma magnitud. Tras la eliminación de \code{PRES}, el clasificador apenas cambia. Sólo mejora muy ligeramente, lo que nos da una idea de lo poco que servía el atributo eliminado.
 
 \subsection{Normalización}
 
