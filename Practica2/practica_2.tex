@@ -179,13 +179,27 @@ A continuación se estudiará la correlación entre atributos. Para realizar est
     \caption{Correlaciones entre atributos}
     \label{cuadro:correlaciones}
 \end{table}
+El primer par procesado ha sido \code{pres-PRES} porque tiene una altísima correlación y no es de los atributos más influyentes sobre la clase, pero principalmente porque representan la misma magnitud. Tras la eliminación de \code{PRES}, el clasificador apenas cambia. Sólo mejora muy ligeramente, lo que nos da una idea de lo poco que servía el atributo eliminado, ganando el modelo en simplicidad.
 
-Procesadas: 
-Quitar WSPD: la más alta correlación
+El segundo par procesado ha sido \code{WSPD-GST} por tener la más alta correlación. De los dos atributos, se ha eliminado WSPD por ser el que menos influye sobre la clase. Tras la eliminación, el clasificador apenas ha cambiado. Sólo 8 patrones correctamente clasificados menos, lo que nos lleva a un CCR de $75,09\%$ con una sensibilidad mínima de $0,679$ para la clase <<Moderada>>.
 
-Saltadas: ATMP hace empeorar
+La siguiente correlación más alta se da entre el par \code{air-ATMP}. \code{air} está fuertemente correlacionado con \code{WTMP} y \code{DEWP} también, y al mismo tiempo es el menos correlacionado con la clase de los cuatro, por lo que se va a eliminar. Tras la eliminación vemos que los estadísticos se ven muy poco afectados: $CCR=75,05\%$ y sensibilidad mínima de $0,686$ para la clase <<Moderada>>.
 
-El primer par procesado ha sido \code{pres-PRES} porque tiene una altísima correlación y no es de los atributos más influyentes sobre la clase, pero principalmente porque representan la misma magnitud. Tras la eliminación de \code{PRES}, el clasificador apenas cambia. Sólo mejora muy ligeramente, lo que nos da una idea de lo poco que servía el atributo eliminado.
+El par \code{WTMP-ATMP} es el siguiente más correlacionado. Como \code{ATMP} es el atributo que menos influye sobre la clase, se elimina éste. El clasificador empeora significativamente pasando a un $CCR=74,22\%$ por lo que se decide no mantener esta eliminación. La eliminación de \code{WTMP} produce un efecto similar ($CCR=74,64\%$), por lo tanto se mantendrán estos dos atributos.
+
+El siguiente par estudiado ha sido \code{APD-DPD}, ya con correlación más baja. El atributo \code{DPD} es mucho menos influyente en la clase, por lo que se decide eliminarlo consiguiendo un ligero aumento de rendimiento en el porcentaje de patrones bien clasificados ($CCR=75,16\%$) así como en la sensibilidad mínima ($0,690$).
+
+El último par es \code{DEWP-WTMP}. \code{DEWP} influye menos en la clase y además, ya se comprobó la influencia negativa de la eliminación de \code{WTMP} en el rendimiento del clasificador, por lo que se elimina \code{DEWP}. Esta eliminación ha tenido un impacto muy negativo sobre el clasificador $CCR=71,86\%$. Por este motivo, la eliminación se revierte y no se eliminan más atributos.
+
+En resumen, se han eliminado los atributos \code{pres}, \code{WSPD}, \code{air} y \code{DPD} reduciendo la complejidad del modelo. Al mismo tiempo, los indicadores del modelo como CCR y mínima sensibilidad han mejorado, alcanzando valores $75,16\%$ y $0,690$ respectivamente (ver figura \ref{fig:clasificador-logistico-resultados-04}).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{clasificador-logistico-resultados-04}
+    \caption{Resultados tras quitar atributos redundantes}
+    \label{fig:clasificador-logistico-resultados-04}
+\end{figure}
+
 
 \subsection{Normalización}
 
