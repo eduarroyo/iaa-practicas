@@ -217,7 +217,7 @@ El siguiente paso del preprocesamiento consiste en normalizar los datos tanto de
     \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} max} & 103850 & 21,1 & 359 & 26,1 & 11,09 & 15,8 & 16,1 \\ \cline{1-1}
     \cellcolor[HTML]{9B9B9B}{\color[HTML]{FFFFFF} ran} & 7830 & 39,0 & 359 & 25,7 & 7,99 & 16,7 & 10,1 \\ \hline
     \end{tabular}
-    \caption{}
+    \caption{Valores máximos, mínimos y rangos por atributo.}
     \label{cuadro:maximos-minimos-normalizacion}
 \end{table}
 
@@ -234,13 +234,13 @@ Como se puede comprobar en la figura \ref{fig:clasificador-logistico-resultados-
 Para la detección de valores extremos, haremos uso del filtro \code{InterquartileRange}. Este filtro añade a la base de datos un par de atributos para indicar si el patrón es un dato extremo o atípico (outlier). Según las transparencias, se consideran valores extremos aquellos que estén a más del doble del rango intercuartílico por debajo del cuartil 1 o por encima del cuartil 3. Aplicando la configuración correspondiente al filtro de Weka, podemos ver que aparecen 33 patrones con datos extremos tal como se muestra en la figura \ref{fig:valores-extremos}.
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{valores-extremos}
+    \includegraphics[scale=1]{valores-extremos}
     \caption{Detección de valores extremos con Weka}
     \label{fig:valores-extremos}
 \end{figure}
 A continuación eliminaremos los patrones con \code{ExtremeValue=yes} utilizando el filtro \code{RemoveWithValues} y posteriormente eliminaremos el atributo \code{ExtremeValues} para poder ejecutar el clasificador logístico con el conjunto de generalización. En dicha ejecución se han obtenido los valores que aparecen en la figura \ref{fig:clasificador-logistico-resultados-06}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{clasificador-logistico-resultados-06}
     \caption{Resultados tras eliminación de valores extremos}
