@@ -17,24 +17,23 @@ El algoritmo construye el árbol mediante un proceso recursivo en el que, para e
 
 Tal como podemos observar en la figura \ref{fig:j48-arbol}, en este caso de estudio, el atributo de mayor ganancia es hair\_length, por tanto se establece como nodo raíz. El árbol generado cuenta con 53 nodos, 27 de los cuáles son nodos hoja. Cada nodo hoja indica la cantidad de patrones que, siendo de la clase indicada, han alcanzado el nodo así como la cantidad de patrones de otras clases que lo han alcanzado, en caso de haber alguno. Los nodos hoja muestran los resultados para todos los patrones, tanto de generalización como de entrenamiento.
 
-De los resultados del clasificador (fig. \ref{fig:j48-resultados}) podemos comentar que se han clasificado correctamente 65 patrones (69,89\%) de un total de 93 del conjunto de generalización. El estadístico Kappa es $\kappa=0,5473$, comparable aunque peor que el obtenido en los ensayos con otros tipos de clasificadores para el mismo conjunto de datos. La clase que peor se reconoce es de nuevo Goblin, con un TP Rate de 0,618, más elevado que el obtenido en los clasificadores anteriores, aunque hay que observar que en este caso, el FP Rate también es más alto, lo que da el peor resultado en AUC para todos los clasificadores utilizados con este conjunto. Esta comparación no es del todo justa porque se ha utilizado una técnica distinta para la generalización. En la matriz de confusión podemos ver que sólo 21 de los 34 Goblins han sido correctamente clasificados.
+\begin{landscape}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[height=0.5\textheight]{arbol}
+        \caption{Árbol de decisión obtenido mediante C4.5}
+        \label{fig:j48-arbol}
+    \end{figure}
+\end{landscape}
 
-\begin{figure}[ht]
+De los resultados del clasificador (fig. \ref{fig:j48-resultados}) podemos comentar que se han clasificado correctamente 65 patrones (69,89\%) de un total de 93 del conjunto de generalización. El estadístico Kappa es $\kappa=0,5473$, comparable aunque peor que el obtenido en los ensayos con otros tipos de clasificadores para el mismo conjunto de datos. La clase que peor se reconoce es de nuevo Goblin, con un TP Rate de 0,618, más elevado que el obtenido en los clasificadores anteriores, aunque hay que observar que en este caso, el FP Rate también es más alto, lo que da el peor resultado en AUC para todos los clasificadores utilizados con este conjunto. Esta comparación no es del todo justa porque se ha utilizado una técnica distinta para la generalización. En la matriz de confusión podemos ver que sólo 21 de los 34 Goblins han sido correctamente clasificados.
+    
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio=true]{j48-resultados}
     \caption{Resultados del clasificador }
     \label{fig:j48-resultados}
 \end{figure}
-
-\begin{landscape}
-\begin{figure}[!h]
-    \centering
-    \includegraphics[height=0.5\textheight]{arbol}
-    \caption{Árbol de decisión obtenido mediante C4.5}
-    \label{fig:j48-arbol}
-\end{figure}
-\end{landscape}
-
 
 
 \clearpage
@@ -55,7 +54,7 @@ Para este ejercicio se utilizará el mismo conjunto de datos preprocesado (fanta
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=.7\textwidth,keepaspectratio=true]{mlp-red}
+    \includegraphics[width=\textwidth,keepaspectratio=true]{mlp-red}
     \caption{Topología de la red}
     \label{fig:mlp-red}
 \end{figure}
@@ -73,7 +72,7 @@ A continuación repasaremos los parámetros de configuración más importantes y
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=.3\textwidth,keepaspectratio=true]{mlp-configuracion}
+    \includegraphics[width=.5\textwidth,keepaspectratio=true]{mlp-configuracion}
     \caption{Formulario de configuración para MultilayerPerceptron}
     \label{fig:mlp-configuracion}
 \end{figure}
@@ -81,9 +80,9 @@ A continuación repasaremos los parámetros de configuración más importantes y
 Al ejecutar el algoritmo con los valores por defecto, observamos unos resultados (ver fig. \ref{fig:mlp-resultados}) casi idénticos a los que se obtuvieron con J48 (ver fig. \ref{fig:j48-resultados}). $CCR=69,89\%$, 65 patrones correctamente clasificados frente a 28 incorrectamente clasificados, $\kappa=0,5455$, peor TP Rate para la clase Goblin con un valor de 0,676 y 23 goblins correctamente clasificados de 34. Dos más que con J48, aunque hay dos ghouls mal clasificados más y los mismos ghost, de ahí la coincidencia del CCR.
 
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=.8]{mlp-resultados}
+    \includegraphics[width=\textwidth]{mlp-resultados}
     \caption{Resultados de MultilayerPerceptron con configuración por defecto}
     \label{fig:mlp-resultados}
 \end{figure}
