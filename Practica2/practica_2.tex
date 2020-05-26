@@ -192,17 +192,16 @@ El par \code{WTMP-ATMP} es el siguiente más correlacionado. Como \code{ATMP} es
 
 El siguiente par estudiado ha sido \code{APD-DPD}, ya con correlación más baja. El atributo \code{DPD} es mucho menos influyente en la clase, por lo que se decide eliminarlo consiguiendo un ligero aumento de rendimiento en el porcentaje de patrones bien clasificados ($CCR=75,16\%$) así como en la sensibilidad mínima ($0,690$).
 
-El último par es \code{DEWP-WTMP}. \code{DEWP} influye menos en la clase y además, ya se comprobó la influencia negativa de la eliminación de \code{WTMP} en el rendimiento del clasificador, por lo que se elimina \code{DEWP}. Esta eliminación ha tenido un impacto muy negativo sobre el clasificador $CCR=71,86\%$. Por este motivo, la eliminación se revierte y no se eliminan más atributos.
-
-En resumen, se han eliminado los atributos \code{pres}, \code{WSPD}, \code{air} y \code{DPD} reduciendo la complejidad del modelo. Al mismo tiempo, los indicadores del modelo como CCR y mínima sensibilidad han mejorado, alcanzando valores $75,16\%$ y $0,690$ respectivamente (ver figura \ref{fig:clasificador-logistico-resultados-04}).
-
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{clasificador-logistico-resultados-04}
     \caption{Resultados tras quitar atributos redundantes}
     \label{fig:clasificador-logistico-resultados-04}
 \end{figure}
 
+El último par es \code{DEWP-WTMP}. \code{DEWP} influye menos en la clase y además, ya se comprobó la influencia negativa de la eliminación de \code{WTMP} en el rendimiento del clasificador, por lo que se elimina \code{DEWP}. Esta eliminación ha tenido un impacto muy negativo sobre el clasificador $CCR=71,86\%$. Por este motivo, la eliminación se revierte y no se eliminan más atributos.
+
+En resumen, se han eliminado los atributos \code{pres}, \code{WSPD}, \code{air} y \code{DPD} reduciendo la complejidad del modelo. Al mismo tiempo, los indicadores del modelo como CCR y mínima sensibilidad han mejorado, alcanzando valores $75,16\%$ y $0,690$ respectivamente (ver figura \ref{fig:clasificador-logistico-resultados-04}).
 
 \subsection{Normalización}
 El siguiente paso del preprocesamiento consiste en normalizar los datos tanto de entrenamiento como de generalización. Queremos llevar cada atributo a un rango $[0-1]$ en entrenamiento y luego aplicar la misma transformación al conjunto de generalización. Para ello, aplicaremos la fórmula \ref{formula:normalizacion} a cada atributo de ambos conjuntos pero utilizando siempre los máximos y mínimos del conjunto de entrenamiento, tal como aparecen en el cuadro \ref{cuadro:maximos-minimos-normalizacion}. El proceso se realizará mediante el filtro \code{MathExpression}, campo a campo. Para el conjunto de entrenamiento se obtiene el mismo resultado utilizando el filtro \code{Normalize}.
