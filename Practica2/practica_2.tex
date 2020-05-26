@@ -34,7 +34,7 @@ Para valorar el preprocesamiento realizado, se generará a cada paso un clasific
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.4]{classifiers-functions-logistic-config}
+    \includegraphics[scale=0.6]{classifiers-functions-logistic-config}
     \caption{Configuración del clasificador logístico}
     \label{fig:classifiers-functions-logistic-config}
 \end{figure}
@@ -62,7 +62,7 @@ Tras la conversión de los archivos y antes de empezar el tratamiento de los dat
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{clasificador-logistico-resultados-00}
+    \includegraphics[width=\textwidth]{clasificador-logistico-resultados-00}
     \caption{Resultados del clasificador logístico antes del tratamiento de datos.}
     \label{fig:clasificador-logistico-resultados-00}
 \end{figure}
@@ -112,7 +112,7 @@ Una vez reemplazados todos los datos perdidos se obtienen en el clasificador los
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{clasificador-logistico-resultados-02}
+    \includegraphics[width=\textwidth]{clasificador-logistico-resultados-02}
     \caption{Resultados tras reemplazar los datos perdidos}
     \label{fig:clasificador-logistico-resultados-02b}
 \end{figure}
@@ -129,14 +129,14 @@ Para medir la influencia de cada atributo sobre la clase del dataset en Weka uti
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.51]{03-correlation-attribute-eval}
+    \includegraphics[scale=0.8]{03-correlation-attribute-eval}
     \caption{Resultados de \code{CorrelationAttributeEval}}
     \label{fig:correlation-attribute-eval}
 \end{figure}
 
 Lo siguiente será eliminar uno por uno atributos desde el menos influyente (\code{rhum}) hacia arriba comprobando el resultado del clasificador logístico hasta que comience a empeorar. Se eliminan \code{rhum} y \code{uwnd} para alcanzar un $CCR=75,23\%$ (fig. \ref{fig:03-quitar-irrelevantes}), pero al eliminar \code{WDIR} vemos que empeora, por lo que paramos ahí. No estoy seguro de si este paso para reducir la complejidad conviene o no conviene en este caso ya que a pesar de la leve mejora del CCR, vemos en la matriz de confusión que la única clase que ha mejorado en nº de patrones bien clasificados es \code{Media}, que ya era la que mejor clasificaba, a costa de un empeoramiento en el resto. 
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{03-quitar-irrelevantes}
     \caption{Resultados tras eliminar atributos irrelevantes}
@@ -145,16 +145,7 @@ Lo siguiente será eliminar uno por uno atributos desde el menos influyente (\co
 
 
 \subsubsection{Análisis de atributos redundantes}
-A continuación se estudiará la correlación entre atributos. Para realizar este análisis en Weka utilizamos el evaluador de atributos \code{PrincipalComponents} junto con el buscador \code{Ranker}. Podemos ver la tabla de correlaciones obtenida en el cuadro \ref{cuadro:correlaciones}, en el que se han marcado en rojo, naranja y amarillo las correlaciones por encima de 0,6 según su importancia (rojo la más importante). El proceso de eliminación de atributos correlados será el siguiente:
-\begin{enumerate}
-    \item Elegir un par atributos con correlación alta.
-    \item Del par elegido, eliminar el atributo menos correlado con la clase según la figura \ref{fig:correlation-attribute-eval}.
-    \item Generar y evaluar el clasificador logístico.
-    \begin{enumerate}
-        \item Si el resultado mejora, se mantiene la eliminación del atributo.
-        \item Si no mejora, se restituye el atributo.
-    \end{enumerate}
-\end{enumerate}
+A continuación se estudiará la correlación entre atributos. Para realizar este análisis en Weka utilizamos el evaluador de atributos \code{PrincipalComponents} junto con el buscador \code{Ranker}. Podemos ver la tabla de correlaciones obtenida en el cuadro \ref{cuadro:correlaciones}, en el que se han marcado en rojo, naranja y amarillo las correlaciones con valor absoluto por encima de 0,6 según su importancia (rojo la más importante).
 
 \begin{table}[ht]
     \resizebox{\textwidth}{!}{%
@@ -179,6 +170,18 @@ A continuación se estudiará la correlación entre atributos. Para realizar est
     \caption{Correlaciones entre atributos}
     \label{cuadro:correlaciones}
 \end{table}
+
+El proceso de eliminación de atributos correlacionados será el siguiente:
+\begin{enumerate}
+    \item Elegir un par atributos con correlación alta.
+    \item Del par elegido, eliminar el atributo menos correlado con la clase según la figura \ref{fig:correlation-attribute-eval}.
+    \item Generar y evaluar el clasificador logístico.
+    \begin{enumerate}
+        \item Si el resultado mejora, se mantiene la eliminación del atributo.
+        \item Si no mejora, se restituye el atributo.
+    \end{enumerate}
+\end{enumerate}
+
 El primer par procesado ha sido \code{pres-PRES} porque tiene una altísima correlación y no es de los atributos más influyentes sobre la clase, pero principalmente porque representan la misma magnitud. Tras la eliminación de \code{PRES}, el clasificador apenas cambia. Sólo mejora muy ligeramente, lo que nos da una idea de lo poco que servía el atributo eliminado, ganando el modelo en simplicidad.
 
 El segundo par procesado ha sido \code{WSPD-GST} por tener la más alta correlación. De los dos atributos, se ha eliminado WSPD por ser el que menos influye sobre la clase. Tras la eliminación, el clasificador apenas ha cambiado. Sólo 8 patrones correctamente clasificados menos, lo que nos lleva a un CCR de $75,09\%$ con una sensibilidad mínima de $0,679$ para la clase <<Moderada>>.
@@ -195,14 +198,14 @@ En resumen, se han eliminado los atributos \code{pres}, \code{WSPD}, \code{air} 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{clasificador-logistico-resultados-04}
+    \includegraphics[width=\textwidth]{clasificador-logistico-resultados-04}
     \caption{Resultados tras quitar atributos redundantes}
     \label{fig:clasificador-logistico-resultados-04}
 \end{figure}
 
 
 \subsection{Normalización}
-El siguiente paso del preprocesamiento consiste en normalizar los datos tanto de entrenamiento como de generalización. Queremos llevar cada atributo a un rango $[0-1]$ en entrenamiento y luego aplicar la misma transformación al conjunto de generalización. Para ello, aplicaremos la fórmula \ref{formula:normalizacion} a cada atributo de ambos conjuntos pero utilizando siempre los máximos y mínimos del conjunto de entrenamiento, tal como aparecen en la tabla \ref{cuadro:maximos-minimos-normalizacion}. El proceso se realizará mediante el filtro \code{MathExpression}, campo a campo. Para el conjunto de entrenamiento se obtiene el mismo resultado utilizando el filtro \code{Normalize}.
+El siguiente paso del preprocesamiento consiste en normalizar los datos tanto de entrenamiento como de generalización. Queremos llevar cada atributo a un rango $[0-1]$ en entrenamiento y luego aplicar la misma transformación al conjunto de generalización. Para ello, aplicaremos la fórmula \ref{formula:normalizacion} a cada atributo de ambos conjuntos pero utilizando siempre los máximos y mínimos del conjunto de entrenamiento, tal como aparecen en el cuadro \ref{cuadro:maximos-minimos-normalizacion}. El proceso se realizará mediante el filtro \code{MathExpression}, campo a campo. Para el conjunto de entrenamiento se obtiene el mismo resultado utilizando el filtro \code{Normalize}.
 \begin{equation} \label{formula:normalizacion}
     a^*=\frac{a-a_{min}}{a_{max}-a_{min}}
 \end{equation}
@@ -223,9 +226,9 @@ El siguiente paso del preprocesamiento consiste en normalizar los datos tanto de
 
 Como se puede comprobar en la figura \ref{fig:clasificador-logistico-resultados-05}, el proceso de normalización ha provocado un empeoramiento generalizado del rendimiento del clasificador, con casi un 4\% menos de patrones correctamente clasificados. No tengo claro que necesariamente cualquier clasificador deba ser mejor con datos normalizados. A la vista de que el clasificador logístico que estamos utilizando para evaluar los efectos del preprocesamiento no se ve beneficiado por la normalización de nuestro conjunto de datos, continúo con los datos sin normalizar.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{clasificador-logistico-resultados-05}
+    \includegraphics[width=\textwidth]{clasificador-logistico-resultados-05}
     \caption{Resultados tras normalización de datos}
     \label{fig:clasificador-logistico-resultados-05}
 \end{figure}
@@ -242,7 +245,7 @@ A continuación eliminaremos los patrones con \code{ExtremeValue=yes} utilizando
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{clasificador-logistico-resultados-06}
+    \includegraphics[width=\textwidth]{clasificador-logistico-resultados-06}
     \caption{Resultados tras eliminación de valores extremos}
     \label{fig:clasificador-logistico-resultados-06}
 \end{figure}
